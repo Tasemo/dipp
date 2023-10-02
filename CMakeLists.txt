@@ -28,5 +28,6 @@ include(PreventInSourceBuilds)
 include(CompilerOptions)
 include(Dependencies)
 include(StaticAnalyzers)
+include(Sanitizers)
 
 add_subdirectory(src)

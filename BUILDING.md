@@ -23,10 +23,10 @@ git clone https://github.com/Tasemo/dipp.git
 cd dipp
 ```
 
-When developing or testing, build the code using Debug mode.
+When developing or testing, build the code using Debug mode. You should also consider enabling either the address, memory or thread sanitizer for runtime error detection. The memory sanitizer is only available when compiling with Clang. The undefined sanitizer is disabled because of false positives with thrill.
 
 ```shell
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DSANITIZE=Address
 cmake --build build --config Debug --parallel $(nproc)
 ```
 
