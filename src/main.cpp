@@ -1,6 +1,7 @@
-#include <iostream>
+#include <thrill/api/context.hpp>
+
+void process(thrill::Context& ctx) {}
 
 int main() {
-  std::cout << "Hello World!\n";
-  return 0;
+  return thrill::api::Run([&](thrill::api::Context& ctx) { process(ctx); });
 }
