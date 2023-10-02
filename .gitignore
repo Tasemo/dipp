@@ -4,3 +4,5 @@
 CMakeCache.txt
 /.cache
 /docs
+configure.sh
+/.vscode

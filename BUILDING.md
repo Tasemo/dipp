@@ -1,6 +1,6 @@
 ## Requirements
 
-Builds are tested with the latest Ubuntu with GCC and Clang. Adapt package names to your system if needed.
+Builds are regularly tested with the latest Ubuntu with GCC and Clang. Adapt package names to your system if needed.
 
 - g++ or clang
 - cmake
@@ -23,7 +23,7 @@ git clone https://github.com/Tasemo/dipp.git
 cd dipp
 ```
 
-When developing or testing, build the code using Debug mode. You should also consider enabling either the address, memory or thread sanitizer for runtime error detection. The memory sanitizer is only available when compiling with Clang. The undefined sanitizer is disabled because of false positives with thrill.
+When developing or testing, build the code using Debug mode. You should also consider enabling either the address, memory or thread sanitizer for runtime error detection. The memory sanitizer is only available when compiling with Clang. The undefined sanitizer is disabled because of false positives with thrill. Since the buid takes a long time, a parallel build with all available cores is recommended.
 
 ```shell
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DSANITIZE=Address
@@ -35,4 +35,19 @@ For deployments or benchmarks, remember to use the Release mode to enable compil
 ```shell
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --config Release --parallel $(nproc)
+```
+
+## Running
+
+To control the behaviour of the application (e.g. the amount of workers per host), you have to use environment variables. A default configuration with an explanation for all values is [provided](configure.default.sh). Copy the file, make your changes and remember to source the file every time you make a new change.
+
+```shell
+cp configure.default.sh configure.sh
+source configure.sh
+```
+
+Executables are created in the ./bin directory. It also contains a /tools subdirectory for profiling tools and a /deploy subdirectory for deployment scripts.
+
+```shell
+./bin/main
 ```
