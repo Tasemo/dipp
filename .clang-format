@@ -1,0 +1,9 @@
+BasedOnStyle: Google
+ColumnLimit: 0
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortLambdasOnASingleLine: Empty
+AlignAfterOpenBracket: BlockIndent
+InsertNewlineAtEOF: True
+LineEnding: LF
+RemoveSemicolon: True
+InsertBraces: True

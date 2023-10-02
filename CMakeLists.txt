@@ -27,5 +27,6 @@ set(CMAKE_POLICY_DEFAULT_CMP0126 NEW)
 include(PreventInSourceBuilds)
 include(CompilerOptions)
 include(Dependencies)
+include(StaticAnalyzers)
 
 add_subdirectory(src)
