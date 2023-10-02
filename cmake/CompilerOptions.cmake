@@ -8,7 +8,7 @@ else()
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_compile_options(-g -Og)
+    add_compile_options(-g -Og -fno-omit-frame-pointer)
 else()
     add_compile_options(-DNDEBUG -O3)
 
