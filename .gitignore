@@ -1,4 +1,5 @@
 /build
+/bin
 /CMakeFiles
 CMakeCache.txt
 /.cache

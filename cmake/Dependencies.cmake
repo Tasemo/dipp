@@ -13,5 +13,8 @@ FetchContent_Declare(
 
 get_directory_property(OLD_OPTIONS COMPILE_OPTIONS)
 add_compile_options(-w)
+set(OLD_RUNTIME_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OLD_RUNTIME_DIR}/tools)
 FetchContent_MakeAvailable(thrill)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OLD_RUNTIME_DIR})
 set_directory_properties(PROPERTIES COMPILE_OPTIONS "${OLD_OPTIONS}")
