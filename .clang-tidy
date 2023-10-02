@@ -1,0 +1,53 @@
+---
+Checks: "
+    *,
+    -abseil*,
+    -altera*,
+    -android*,
+    -boost*,
+    -cert*
+    -concurrency*,
+    -darwin*,
+    -fuchsia*,
+    -google*,
+    -linuxkernel*,
+    -llvm*,
+    -mpi*,
+    -objc*,
+    -openmp*,
+    -zircon*,
+    -modernize-use-trailing-return-type,
+    -modernize-use-nodiscard,
+    -readability-magic-numbers,
+    -readability-identifier-length,
+    -readability-isolate-declaration,
+    -readability-else-after-return,
+    -bugprone-easily-swappable-parameters,
+    -bugprone-narrowing-conversions,
+    -misc-non-private-member-variables-in-classes,
+    -misc-const-correctness,
+    -misc-include-cleaner,
+    -cppcoreguidelines-avoid-const-or-ref-data-members,
+    -cppcoreguidelines-avoid-magic-numbers,
+    -cppcoreguidelines-narrowing-conversions,
+    -cppcoreguidelines-non-private-member-variables-in-classes,
+"
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'
+FormatStyle: none
+CheckOptions:
+    cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor: true
+    cppcoreguidelines-explicit-virtual-functions.IgnoreDestructors: true
+    modernize-use-override.IgnoreDestructors: true
+    hicpp-use-override.IgnoreDestructors: true
+    hicpp-special-member-functions.AllowSoleDefaultDtor: true
+    readability-identifier-naming.NamespaceCase: lower_case
+    readability-identifier-naming.ClassCase: CamelCase
+    readability-identifier-naming.StructCase: CamelCase
+    readability-identifier-naming.TemplateParameterCase: CamelCase
+    readability-identifier-naming.FunctionCase: lower_case
+    readability-identifier-naming.VariableCase: lower_case
+    readability-identifier-naming.ConstantCase: UPPER_CASE
+    readability-identifier-naming.ClassMemberCase: lower_case
+    readability-identifier-naming.PrivateMemberPrefix: _
+    readability-identifier-naming.ProtectedMemberPrefix: _
