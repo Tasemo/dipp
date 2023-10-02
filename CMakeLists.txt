@@ -16,5 +16,6 @@ set(BUILD_SHARED_LIBS FALSE)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(PreventInSourceBuilds)
+include(CompilerOptions)
 
 add_subdirectory(src)
