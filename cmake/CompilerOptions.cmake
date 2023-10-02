@@ -1,3 +1,9 @@
+add_compile_options(
+    -Wall -Wextra -Wpedantic -Wcast-qual -Wold-style-cast -Wsuggest-override -Wextra-semi
+    -Wnon-virtual-dtor -Woverloaded-virtual -Wnull-dereference -Wdouble-promotion
+    -Wcast-align -Wsign-conversion -Wformat=2 -Wimplicit-fallthrough -Wshadow
+)
+
 include(CheckCXXCompilerFlag)
 check_cxx_compiler_flag("-march=native" COMPILER_SUPPORTS_MARCH_NATIVE)
 
