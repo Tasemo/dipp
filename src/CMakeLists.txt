@@ -1,2 +1,3 @@
+add_subdirectory(core)
 add_executable(main main.cpp)
-target_link_libraries(main PRIVATE thrill)
+target_link_libraries(main PRIVATE core)

@@ -1,0 +1,6 @@
+include(GoogleTest)
+file(GLOB_RECURSE TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS *.[ch]pp)
+add_executable(main_test ${TEST_SOURCES})
+set_target_properties(main_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/tests")
+target_link_libraries(main_test PRIVATE gtest_main core)
+gtest_discover_tests(main_test)

@@ -46,7 +46,7 @@ cp configure.default.sh configure.sh
 source configure.sh
 ```
 
-Executables are created in the ./bin directory. It also contains a /tools subdirectory for profiling tools and a /deploy subdirectory for deployment scripts.
+Executables are created in the ./bin directory. It also contains a /tools subdirectory for profiling tools, a /deploy subdirectory for deployment scripts and a /tests directory for unit tests.
 
 ```shell
 ./bin/main
