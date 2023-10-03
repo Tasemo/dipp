@@ -1,5 +1,6 @@
 option(USE_CLANG_FORMAT "Use the clang-format tool if found" ON)
-option(USE_CLANG_TIDY "Use the clang-tidy tool if found" OFF)
+option(USE_CLANG_TIDY "Use the clang-tidy tool if found" ON)
+option(USE_IWYU "Use the include-what-you-use tool if found" ON)
 option(USE_DOXYGEN "Use the doxygen tool if found" ON)
 
 if(USE_CLANG_FORMAT)
@@ -23,6 +24,16 @@ if(USE_CLANG_TIDY)
     endif()
 endif()
 
+if(USE_IWYU)
+    find_program(INCLUDE_WHAT_YOU_USE include-what-you-use)
+
+    if(INCLUDE_WHAT_YOU_USE)
+        set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${INCLUDE_WHAT_YOU_USE};-Xiwyu;--no_fwd_decls;-Xiwyu;--no_comments")
+    else()
+        message(NOTICE "include-what-you-use requested, but not found")
+    endif()
+endif()
+
 if(USE_DOXYGEN)
     find_package(Doxygen OPTIONAL_COMPONENTS dot)
 
@@ -32,6 +43,7 @@ if(USE_DOXYGEN)
             doxygen_theme
             GIT_REPOSITORY https://github.com/jothepro/doxygen-awesome-css
             GIT_TAG v2.2.1
+            GIT_SHALLOW TRUE
         )
         FetchContent_MakeAvailable(doxygen_theme)
 

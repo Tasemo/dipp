@@ -12,11 +12,12 @@ When developing, consider installing some of the following tools that are includ
 
 - clang-format (system package or https://github.com/llvm/llvm-project)
 - clang-tidy (system package or https://github.com/llvm/llvm-project)
+- include-what-you-see (https://github.com/include-what-you-use/include-what-you-use)
 - Doxygen (system package or https://github.com/doxygen/doxygen)
 
 ## Building
 
-First, checkout the code from the GitHub repository.
+To get started, checkout the code from the GitHub repository.
 
 ```shell
 git clone https://github.com/Tasemo/dipp.git
