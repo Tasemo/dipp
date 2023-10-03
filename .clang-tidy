@@ -47,7 +47,7 @@ CheckOptions:
     readability-identifier-naming.TemplateParameterCase: CamelCase
     readability-identifier-naming.FunctionCase: lower_case
     readability-identifier-naming.VariableCase: lower_case
-    readability-identifier-naming.ConstantCase: UPPER_CASE
+    readability-identifier-naming.GlobalConstantCase: UPPER_CASE
     readability-identifier-naming.ClassMemberCase: lower_case
     readability-identifier-naming.PrivateMemberPrefix: _
     readability-identifier-naming.ProtectedMemberPrefix: _
