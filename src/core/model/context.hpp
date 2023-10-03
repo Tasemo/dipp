@@ -9,7 +9,7 @@ namespace model {
  */
 struct Context {
   /**
-   * @brief the thrill context with information about the distribution
+   * @brief the thrill context with information about the cluster
    */
   thrill::Context& ctx;
   /**
@@ -33,11 +33,11 @@ struct Context {
    */
   const size_t y_tiles;
   /**
-   * @brief the current subimage in the x direction, staring from the top left
+   * @brief the current subimage in the x direction, starting from the top left
    */
   const size_t x_tile;
   /**
-   * @brief the current subimage in the y direction, staring from the top left
+   * @brief the current subimage in the y direction, starting from the top left
    */
   const size_t y_tile;
   /**

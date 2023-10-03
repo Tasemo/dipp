@@ -12,7 +12,7 @@ namespace util {
  * @brief converts a value to a std::string
  *
  * @note the value must be a string-like object or be numeric (accepted by std::to_string)
- * @note does not print decimal values if they are zero
+ * @note string does not contain numerical decimal values if they are zero
  */
 template <typename T>
 inline std::string to_string(const T& value) {
