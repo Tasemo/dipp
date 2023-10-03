@@ -3,7 +3,7 @@
 #include <lift/escape.hpp>
 #include <sstream>
 #include <string_view>
-#include <type_traits>
+#include <util/string_utils.hpp>
 
 namespace util {
 
@@ -17,23 +17,13 @@ class QueryBuilder {
 
  public:
   /**
-   * @brief adds a new key-value part to the query
+   * @brief adds a new key-value part to the query and URL encodes the value if needed
    *
-   * @note the value must be a string-like object or be accepted by std::to_string
+   * @note the value must be a string-like object or be numeric (accepted by std::to_string)
    */
   template <typename T>
   QueryBuilder& add_part(std::string_view key, const T& part) {
-    std::string value;
-    if constexpr (
-        std::is_same_v<T, std::string> ||
-        std::is_same_v<std::decay_t<T>, char*> ||
-        std::is_same_v<T, const char*> ||
-        std::is_same_v<T, std::string_view>
-    ) {
-      value = part;
-    } else {
-      value = std::to_string(part);
-    }
+    std::string value = util::to_string(part);
     if (!_is_first) {
       _query << '&';
     }
