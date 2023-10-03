@@ -11,11 +11,22 @@ FetchContent_Declare(
     GIT_SHALLOW TRUE
 )
 
+set(LIFT_BUILD_TESTS FALSE)
+set(LIFT_CODE_COVERAGE FALSE)
+set(LIFT_BUILD_EXAMPLES FALSE)
+FetchContent_Declare(
+    lifthttp
+    SYSTEM
+    GIT_REPOSITORY https://github.com/jbaldwin/liblifthttp.git
+    GIT_TAG v2022.1
+    GIT_SHALLOW TRUE
+)
+
 get_directory_property(OLD_OPTIONS COMPILE_OPTIONS)
 add_compile_options(-w)
 set(OLD_RUNTIME_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OLD_RUNTIME_DIR}/tools)
-FetchContent_MakeAvailable(thrill)
+FetchContent_MakeAvailable(thrill lifthttp)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OLD_RUNTIME_DIR})
 set_directory_properties(PROPERTIES COMPILE_OPTIONS "${OLD_OPTIONS}")
 

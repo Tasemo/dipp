@@ -1,10 +1,16 @@
 ## Requirements
 
-Builds are regularly tested with the latest Ubuntu with GCC and Clang. Adapt package names to your system if needed.
+Builds are regularly tested with the latest Ubuntu with GCC and Clang. Adapt package names to your system if needed. The following tools are needed for building.
 
 - g++ or clang
 - cmake
 - git
+
+Some dynamic libraries are also required at build and runtime.
+
+- libcurl4-openssl-dev
+- libuv1-dev
+- zlib1g-dev
 
 ## Developing
 
