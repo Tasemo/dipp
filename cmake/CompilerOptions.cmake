@@ -22,7 +22,10 @@ else()
     check_ipo_supported(RESULT IPO_SUPPORTED OUTPUT IPO_OUTPUT)
 
     if(IPO_SUPPORTED)
-        set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+        if(NOT(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION LESS 17))
+            # build fails with IPO on clang, most likely because of incorrect linker
+            set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+        endif()
     else()
         message(NOTICE "IPO/LTO is not supported: ${IPO_OUTPUT}")
     endif()
