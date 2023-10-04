@@ -22,11 +22,31 @@ FetchContent_Declare(
     GIT_SHALLOW TRUE
 )
 
+set(BUILD_LIST imgcodecs)
+set(BUILD_TESTS FALSE)
+set(BUILD_PERF FALSE)
+set(WITH_PNG FALSE)
+set(WITH_TIFF FALSE)
+set(WITH_WEBP FALSE)
+set(WITH_OPENJPEG FALSE)
+set(WITH_JASPER FALSE)
+set(WITH_OPENEXR FALSE)
+set(HIGHGUI_ENABLE_PLUGINS FALSE)
+set(VIDEOIO_ENABLE_PLUGINS FALSE)
+set(DNN_ENABLE_PLUGINS FALSE)
+FetchContent_Declare(
+    opencv
+    SYSTEM
+    GIT_REPOSITORY https://github.com/opencv/opencv.git
+    GIT_TAG 4.8.0
+    GIT_SHALLOW TRUE
+)
+
 get_directory_property(OLD_OPTIONS COMPILE_OPTIONS)
 add_compile_options(-w)
 set(OLD_RUNTIME_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OLD_RUNTIME_DIR}/tools)
-FetchContent_MakeAvailable(thrill lifthttp)
+FetchContent_MakeAvailable(thrill lifthttp opencv)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OLD_RUNTIME_DIR})
 set_directory_properties(PROPERTIES COMPILE_OPTIONS "${OLD_OPTIONS}")
 

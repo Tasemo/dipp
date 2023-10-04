@@ -11,6 +11,7 @@ Some dynamic libraries are also required at build and runtime.
 - libcurl4-openssl-dev
 - libuv1-dev
 - zlib1g-dev
+- libjpeg-turbo8-dev (recommended) or libjpeg-dev
 
 ## Developing
 
