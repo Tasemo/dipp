@@ -1,6 +1,7 @@
 #include <loading/sdss_image_loader.hpp>
 #include <model/context.hpp>
 #include <model/sdss_context.hpp>
+#include <processing/image_to_dia.hpp>
 #include <thrill/api/context.hpp>
 
 struct Args {
@@ -15,7 +16,10 @@ void process(thrill::Context &ctx, const Args &args) {
   model::Context context(ctx, args.global_width, args.global_height);
   model::SDSSContext sdss(context, args.start_ra, args.start_dec, args.scale);
   loading::SDSSImageLoader loader(sdss);
-  auto image_path = loader.load_image();
+  auto image = loader.load_image();
+
+  processing::ImageToDIA image_to_dia(image);
+  image_to_dia.process(context);
 }
 
 int main() {

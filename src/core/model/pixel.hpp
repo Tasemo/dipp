@@ -105,13 +105,14 @@ struct Pixel {
     location /= s;
     return *this;
   }
-
-  /**
-   * @brief prints the pixels location and bgr value to the stream
-   */
-  friend std::ostream& operator<<(std::ostream& os, const Pixel& pixel) {
-    return os << '(' << pixel.location << ',' << pixel.bgr_value << ')';
-  }
 };
+
+inline bool operator==(const Pixel& lhs, const Pixel& rhs) {
+  return lhs.location == rhs.location && lhs.bgr_value == rhs.bgr_value;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const Pixel& pixel) {
+  return os << '(' << pixel.location << ',' << pixel.bgr_value << ')';
+}
 
 }  // namespace model
