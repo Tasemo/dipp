@@ -1,7 +1,11 @@
 #include "sdss_image_loader.hpp"
 
+#include <filesystem>
 #include <lift/request.hpp>
+#include <opencv2/core/mat.hpp>
+#include <opencv2/imgcodecs.hpp>
 #include <string>
+#include <util/file_utils.hpp>
 #include <util/network_utils.hpp>
 #include <util/query_builder.hpp>
 
@@ -21,6 +25,27 @@ lift::response loading::SDSSImageLoader::load_from_network(const std::string& op
   return util::send_request(request, "SDSS");
 }
 
-std::string loading::SDSSImageLoader::load_image() {
-  return "/data";
+cv::Mat loading::SDSSImageLoader::load(const std::string& data_dir, const std::string& options = "") const {
+  std::string data_path = data_dir + std::to_string(_sdss.context.rank) + ".jpeg";
+  if (std::filesystem::exists(data_path)) {
+    return cv::imread(data_path, cv::IMREAD_COLOR);
+  }
+  auto response = load_from_network(options);
+  std::filesystem::create_directories(data_dir);
+  util::write_to_file(data_path, response.data(), true);
+  std::string buffer(response.data());
+  cv::Mat raw_data(1, buffer.size(), CV_8UC1, static_cast<void*>(buffer.data()));
+  return cv::imdecode(raw_data, cv::IMREAD_COLOR);
+}
+
+std::string loading::SDSSImageLoader::get_data_dir() const {
+  return DATA_LOCATION + _sdss.file_key + '/';
+}
+
+cv::Mat loading::SDSSImageLoader::load_image() {
+  return load(get_data_dir());
+}
+
+cv::Mat loading::SDSSImageLoader::load_validation() {
+  return load(get_data_dir() + "validation/", "B");
 }

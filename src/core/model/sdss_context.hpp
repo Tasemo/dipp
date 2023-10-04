@@ -54,7 +54,7 @@ struct SDSSContext {
   const std::string file_key;
 
   /**
-   * @brief Constructs a new SDSS context with a given general context, the top left starting point and a pixel scale
+   * @brief constructs a new SDSS context with a given general context, the top left starting point and a pixel scale
    */
   SDSSContext(const model::Context& context, double start_ra, double start_dec, double scale_arc)
       : context(context),

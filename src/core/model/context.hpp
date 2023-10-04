@@ -50,7 +50,7 @@ struct Context {
   const size_t local_height;
 
   /**
-   * @brief Constructs a new context with a given thrill context and a global width and height
+   * @brief constructs a new context with a given thrill context and a global width and height
    */
   Context(thrill::Context& ctx, size_t global_width, size_t global_height)
       : ctx(ctx),
