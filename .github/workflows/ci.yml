@@ -17,8 +17,10 @@ jobs:
           - ubuntu-latest
         compiler:
           - [g++, g++]
-          - [clang, clang++]
+          # temporarily disabled clang as builds hang on GitHub for some reason
+          # - [clang, clang++]
         build-type:
+          - Debug
           - Release
     steps:
       - name: Checkout source code
