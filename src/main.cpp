@@ -4,8 +4,9 @@
 #include <processing/image_to_dia.hpp>
 #include <processing/k_means.hpp>
 #include <thrill/api/context.hpp>
+#include <util/paint_clusters.hpp>
 
-struct Args {
+struct CommandLineArgs {
   size_t global_width{1024};
   size_t global_height{1024};
   double start_ra{180.0};
@@ -16,20 +17,22 @@ struct Args {
   double epsilon{1.0};
 };
 
-void process(thrill::Context &ctx, const Args &args) {
+void process(thrill::Context &ctx, const CommandLineArgs &args) {
   model::Context context(ctx, args.global_width, args.global_height);
   model::SDSSContext sdss(context, args.start_ra, args.start_dec, args.scale);
   loading::SDSSImageLoader loader(sdss);
   auto image = loader.load_image();
+  util::PaintClusters debug_clusters(context, image, loader.get_data_dir() + "clusters/");
 
   processing::ImageToDIA image_to_dia(image);
   processing::KMeans k_means(args.cluster_count, args.max_iteratations, args.epsilon);
   auto k_means_chain = image_to_dia.add_next(k_means);
-  auto result = k_means_chain->process(context);
+  auto k_means_model = k_means_chain->process(context);
+  debug_clusters.paint(k_means_model);
 }
 
 int main() {
-  Args args{};
+  CommandLineArgs args{};
   return thrill::api::Run([&args](thrill::api::Context &ctx) {
     process(ctx, args);
   });

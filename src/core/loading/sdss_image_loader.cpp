@@ -12,7 +12,7 @@
 static const std::string BASE_URL = "https://skyserver.sdss.org/dr18/SkyServerWS/ImgCutout/getjpeg?";
 static const std::string DATA_LOCATION = "/data/sdss/";
 
-lift::response loading::SDSSImageLoader::load_from_network(const std::string& options = "") const {
+lift::response loading::SDSSImageLoader::load_from_network(const std::string& options) const {
   util::QueryBuilder query;
   query.add_part("width", _sdss.context.local_width)
       .add_part("height", _sdss.context.local_height)
@@ -28,7 +28,7 @@ lift::response loading::SDSSImageLoader::load_from_network(const std::string& op
 loading::SDSSImageLoader::SDSSImageLoader(const model::SDSSContext& sdss)
     : _sdss(sdss) {}
 
-cv::Mat loading::SDSSImageLoader::load(const std::string& data_dir, const std::string& options = "") const {
+cv::Mat loading::SDSSImageLoader::load(const std::string& data_dir, const std::string& options) const {
   std::string data_path = data_dir + std::to_string(_sdss.context.rank) + ".jpeg";
   if (std::filesystem::exists(data_path)) {
     return cv::imread(data_path, cv::IMREAD_COLOR);

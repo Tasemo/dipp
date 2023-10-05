@@ -15,8 +15,8 @@ class SDSSImageLoader {
  private:
   const model::SDSSContext& _sdss;
 
-  lift::response load_from_network(const std::string& options) const;
-  cv::Mat load(const std::string& data_dir, const std::string& options) const;
+  lift::response load_from_network(const std::string& options = "") const;
+  cv::Mat load(const std::string& data_dir, const std::string& options = "") const;
 
  public:
   /**
