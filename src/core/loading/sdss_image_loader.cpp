@@ -25,6 +25,9 @@ lift::response loading::SDSSImageLoader::load_from_network(const std::string& op
   return util::send_request(request, "SDSS");
 }
 
+loading::SDSSImageLoader::SDSSImageLoader(const model::SDSSContext& sdss)
+    : _sdss(sdss) {}
+
 cv::Mat loading::SDSSImageLoader::load(const std::string& data_dir, const std::string& options = "") const {
   std::string data_path = data_dir + std::to_string(_sdss.context.rank) + ".jpeg";
   if (std::filesystem::exists(data_path)) {

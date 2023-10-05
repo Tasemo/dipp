@@ -22,9 +22,7 @@ class SDSSImageLoader {
   /**
    * @brief constructs a new SDSS image loader with a SDSS context
    */
-  explicit SDSSImageLoader(const model::SDSSContext& sdss)
-      : _sdss(sdss) {}
-
+  explicit SDSSImageLoader(const model::SDSSContext& sdss);
   /**
    * @brief the directory where images are stored
    */

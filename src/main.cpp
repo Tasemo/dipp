@@ -2,6 +2,7 @@
 #include <model/context.hpp>
 #include <model/sdss_context.hpp>
 #include <processing/image_to_dia.hpp>
+#include <processing/k_means.hpp>
 #include <thrill/api/context.hpp>
 
 struct Args {
@@ -10,6 +11,9 @@ struct Args {
   double start_ra{180.0};
   double start_dec{0.0};
   double scale{1.0};
+  size_t cluster_count{6};
+  size_t max_iteratations{10};
+  double epsilon{1.0};
 };
 
 void process(thrill::Context &ctx, const Args &args) {
@@ -19,7 +23,9 @@ void process(thrill::Context &ctx, const Args &args) {
   auto image = loader.load_image();
 
   processing::ImageToDIA image_to_dia(image);
-  image_to_dia.process(context);
+  processing::KMeans k_means(args.cluster_count, args.max_iteratations, args.epsilon);
+  auto k_means_chain = image_to_dia.add_next(k_means);
+  auto result = k_means_chain->process(context);
 }
 
 int main() {
