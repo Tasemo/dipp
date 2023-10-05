@@ -13,7 +13,7 @@
 TEST(ImageToDIA, BasicTest) {
   auto start_func = [&](thrill::Context& ctx) {
     model::Context context(ctx, std::sqrt(ctx.num_workers()), std::sqrt(ctx.num_workers()));
-    cv::Mat image(1, 1, CV_8UC3);
+    cv::Mat image(1, 1, CV_8UC3, cv::Vec3b{});
     processing::ImageToDIA image_to_dia(image);
     auto result = image_to_dia.process(context);
     auto gathered = result.Gather(ctx.my_rank());
