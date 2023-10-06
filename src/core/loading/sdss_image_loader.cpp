@@ -25,9 +25,6 @@ lift::response loading::SDSSImageLoader::load_from_network(const std::string& op
   return util::send_request(request, "SDSS");
 }
 
-loading::SDSSImageLoader::SDSSImageLoader(const model::SDSSContext& sdss)
-    : _sdss(sdss) {}
-
 cv::Mat loading::SDSSImageLoader::load(const std::string& data_dir, const std::string& options) const {
   std::string data_path = data_dir + std::to_string(_sdss.context.rank) + ".jpeg";
   if (std::filesystem::exists(data_path)) {
@@ -40,6 +37,9 @@ cv::Mat loading::SDSSImageLoader::load(const std::string& data_dir, const std::s
   cv::Mat raw_data(1, buffer.size(), CV_8UC1, static_cast<void*>(buffer.data()));
   return cv::imdecode(raw_data, cv::IMREAD_COLOR);
 }
+
+loading::SDSSImageLoader::SDSSImageLoader(const model::SDSSContext& sdss)
+    : _sdss(sdss) {}
 
 std::string loading::SDSSImageLoader::get_data_dir() const {
   return DATA_LOCATION + _sdss.file_key + '/';
