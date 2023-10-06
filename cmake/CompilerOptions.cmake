@@ -23,7 +23,8 @@ else()
 
     if(IPO_SUPPORTED)
         if(NOT(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION LESS 17))
-            # build fails with IPO on clang, most likely because of incorrect linker
+            # build fails with IPO on clang <= 16, as they need a special linker (not just ld)
+            # clang 17 supports fat LTO, which works universally but with longer compile times
             set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
         endif()
     else()
