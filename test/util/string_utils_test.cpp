@@ -4,12 +4,12 @@
 #include <string_view>
 #include <util/string_utils.hpp>
 
-TEST(StringUtils, BasicTest) {
+TEST(ToString, BasicTest) {
   EXPECT_EQ("42", util::to_string(42));
   EXPECT_EQ("43", util::to_string(43.0));
 }
 
-TEST(StringUtils, StringTest) {
+TEST(ToString, StringTest) {
   using namespace std::literals;
   std::string string1 = "S1";
   const char* string2 = "S2";
