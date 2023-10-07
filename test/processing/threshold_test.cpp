@@ -19,10 +19,10 @@ TEST(Threshold, BasicTest) {
     auto threshold = processing::Threshold(254.0);
     auto result = threshold.process(context, pixels);
     auto gathered = result.Gather(ctx.my_rank());
-    ASSERT_EQ(gathered.size(), context.global_width * context.global_height / 2 / ctx.num_workers());
+    EXPECT_EQ(gathered.size(), context.global_width * context.global_height / 2 / ctx.num_workers());
     for (const auto& pixel : gathered) {
       auto expected = cv::Vec3b{255, 255, 255};
-      ASSERT_EQ(pixel.bgr_value, expected);
+      EXPECT_EQ(pixel.bgr_value, expected);
     }
   };
   run(1, 4, start_func);

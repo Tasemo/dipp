@@ -3,6 +3,8 @@
 #include <model/sdss_context.hpp>
 #include <processing/image_to_dia.hpp>
 #include <processing/k_means.hpp>
+#include <processing/threshold.hpp>
+#include <processing/write_image_to_disk.hpp>
 #include <thrill/api/context.hpp>
 #include <util/paint_clusters.hpp>
 
@@ -25,8 +27,10 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
   util::PaintClusters debug_clusters(context, image, loader.get_data_dir() + "clusters/");
 
   processing::ImageToDIA image_to_dia(image);
+  processing::Threshold threshold(15);
+  processing::WriteImageToDisk write_image_to_disk(loader.get_data_dir() + "debug/");
   processing::KMeans k_means(args.cluster_count, args.max_iteratations, args.epsilon);
-  auto k_means_chain = image_to_dia.add_next(k_means);
+  auto k_means_chain = image_to_dia.add_next(threshold)->add_next(write_image_to_disk)->add_next(k_means);
   auto k_means_model = k_means_chain->process(context);
   debug_clusters.paint(k_means_model);
 }
