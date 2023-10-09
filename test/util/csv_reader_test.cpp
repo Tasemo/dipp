@@ -12,10 +12,10 @@ TEST(CSVReader, BasicTest) {
       "42,43,44\n";
   util::CSVReader csv(data, true);
   auto lines = csv.get_lines();
-  ASSERT_EQ(lines.size(), 1);
-  ASSERT_EQ(lines[0][0], "42");
-  ASSERT_EQ(lines[0][1], "43");
-  ASSERT_EQ(lines[0][2], "44");
+  EXPECT_EQ(lines.size(), 1);
+  EXPECT_EQ(lines[0][0], "42");
+  EXPECT_EQ(lines[0][1], "43");
+  EXPECT_EQ(lines[0][2], "44");
 }
 
 TEST(CSVReader, ReadLineConversion) {
@@ -25,12 +25,12 @@ TEST(CSVReader, ReadLineConversion) {
   float value_b = 0;
   double value_c = 0;
   size_t value_d = 0;
-  ASSERT_TRUE(csv.read_line(value_a, value_b, value_c, value_d));
-  ASSERT_FALSE(csv.read_line(value_a, value_b, value_c, value_d));
-  ASSERT_EQ(value_a, 42);
-  ASSERT_EQ(value_b, 43);
-  ASSERT_EQ(value_c, 44);
-  ASSERT_EQ(value_d, 45);
+  EXPECT_TRUE(csv.read_line(value_a, value_b, value_c, value_d));
+  EXPECT_FALSE(csv.read_line(value_a, value_b, value_c, value_d));
+  EXPECT_EQ(value_a, 42);
+  EXPECT_EQ(value_b, 43);
+  EXPECT_EQ(value_c, 44);
+  EXPECT_EQ(value_d, 45);
 }
 
 TEST(CSVReader, ReadLineArgumentOverflow) {
@@ -38,19 +38,19 @@ TEST(CSVReader, ReadLineArgumentOverflow) {
   util::CSVReader csv(data, false);
   int value_a = 0;
   float value_b = 0;
-  ASSERT_THROW(csv.read_line(value_a, value_b), std::out_of_range);
+  EXPECT_THROW(csv.read_line(value_a, value_b), std::out_of_range);
 }
 
 TEST(CSVReader, ReadLineArgumentUnderflow) {
   std::string data = "42,43";
   util::CSVReader csv(data, false);
   int value_a = 0;
-  ASSERT_THROW(csv.read_line(value_a), std::out_of_range);
+  EXPECT_THROW(csv.read_line(value_a), std::out_of_range);
 }
 
 TEST(CSVReader, Empty) {
   util::CSVReader csv("", false);
-  ASSERT_THROW(csv.get_line(0), std::out_of_range);
+  EXPECT_THROW(csv.get_line(0), std::out_of_range);
 }
 
 TEST(CSVReader, CommentsInCells) {
@@ -59,8 +59,8 @@ TEST(CSVReader, CommentsInCells) {
       "42,#43,#44\n";
   util::CSVReader csv(data, true);
   auto lines = csv.get_lines();
-  ASSERT_EQ(lines.size(), 1);
-  ASSERT_EQ(lines[0][0], "42");
-  ASSERT_EQ(lines[0][1], "#43");
-  ASSERT_EQ(lines[0][2], "#44");
+  EXPECT_EQ(lines.size(), 1);
+  EXPECT_EQ(lines[0][0], "42");
+  EXPECT_EQ(lines[0][1], "#43");
+  EXPECT_EQ(lines[0][2], "#44");
 }
