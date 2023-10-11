@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <loading/sdss_image_loader.hpp>
 #include <loading/sdss_validation_loader.hpp>
 #include <model/context.hpp>
@@ -7,6 +8,7 @@
 #include <processing/threshold.hpp>
 #include <processing/write_image_to_disk.hpp>
 #include <thrill/api/context.hpp>
+#include <tlx/cmdline_parser.hpp>
 #include <util/paint_bounding_boxes.hpp>
 #include <util/paint_clusters.hpp>
 
@@ -20,6 +22,20 @@ struct CommandLineArgs {
   size_t max_iteratations{10};
   double epsilon{1.0};
 };
+
+bool parse_command_line(CommandLineArgs &args, int argc, const char *const *argv) {
+  tlx::CmdlineParser parser;
+  parser.set_description(R"(Distributed image processing pipeline with various distribution methods)");
+  parser.set_author("Tim Oelkers <tim.oelkers@web.de>");
+  parser.add_size_t('w', "width", args.global_width, "total image width, default: 1024");
+  parser.add_size_t('h', "height", args.global_height, "total image height, default: 1024");
+  parser.add_double('r', "start_ra", args.start_ra, "right-ascension (ra) of the top left corner of the SDSS image, default: 180.0");
+  parser.add_double('d', "start_dec", args.start_dec, "declination (dec) of the top left corner of the SDSS image, default: 0.0");
+  parser.add_double('s', "scale", args.scale, "scale in arcseconds per pixel of the SDSS image, default: 1.0");
+  parser.add_size_t('i', "max_iterations", args.max_iteratations, "maximum number of k-means iterations, default: 10");
+  parser.add_double('e', "epsilon", args.epsilon, "desired k-means accuracy, default: 1.0");
+  return parser.process(argc, argv);
+}
 
 void process(thrill::Context &ctx, const CommandLineArgs &args) {
   model::Context context(ctx, args.global_width, args.global_height);
@@ -46,8 +62,11 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
   debug_clusters.paint(k_means_model);
 }
 
-int main() {
+int main(int argc, const char *const *argv) {
   CommandLineArgs args{};
+  if (!parse_command_line(args, argc, argv)) {
+    return EXIT_FAILURE;
+  }
   return thrill::api::Run([&args](thrill::api::Context &ctx) {
     process(ctx, args);
   });
