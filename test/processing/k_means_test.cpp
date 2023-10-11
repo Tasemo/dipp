@@ -25,7 +25,7 @@ TEST(KMeans, BasicTest) {
       EXPECT_EQ(model.centers[i].location, location);
     }
   };
-  run(1, 2, start_func);
+  run_thrill(1, 2, start_func);
 }
 
 TEST(KMeans, EqualValues) {
@@ -41,7 +41,7 @@ TEST(KMeans, EqualValues) {
       EXPECT_EQ(center.location, cv::Vec2d{});
     }
   };
-  run(1, 2, start_func);
+  run_thrill(1, 2, start_func);
 }
 
 TEST(KMeans, Epsilon) {
@@ -54,5 +54,5 @@ TEST(KMeans, Epsilon) {
     auto model = k_means.process(context, pixels);
     EXPECT_EQ(model.iterations, 1);
   };
-  run(1, 2, start_func);
+  run_thrill(1, 2, start_func);
 }

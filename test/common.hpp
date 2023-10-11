@@ -8,7 +8,7 @@
 #include <string>
 #include <thrill/api/context.hpp>
 
-inline void run(size_t hosts, size_t worker_per_host, const std::function<void(thrill::Context&)>& job_startpoint) {
+inline void run_thrill(size_t hosts, size_t worker_per_host, const std::function<void(thrill::Context&)>& job_startpoint) {
   thrill::api::MemoryConfig mem_config;
   mem_config.verbose_ = false;
   mem_config.enable_proc_profiler_ = false;

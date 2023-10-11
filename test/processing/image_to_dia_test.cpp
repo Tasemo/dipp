@@ -21,5 +21,5 @@ TEST(ImageToDIA, BasicTest) {
     model::Pixel expected(context.x_tile, context.y_tile, cv::Vec3b{});
     EXPECT_EQ(expected, gathered[0]);
   };
-  run(1, 4, start_func);
+  run_thrill(1, 4, start_func);
 }

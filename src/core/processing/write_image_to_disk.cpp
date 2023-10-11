@@ -7,6 +7,7 @@ processing::WriteImageToDisk::WriteImageToDisk(const std::string& output_folder,
     : _output_folder(output_folder), _missing_color(missing_color) {
   std::filesystem::create_directories(output_folder);
 }
+
 thrill::DIA<model::Pixel> processing::WriteImageToDisk::process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels) const {
   std::vector<cv::Vec3b> local(ctx.local_width * ctx.local_height, _missing_color);
   auto to_local = pixels.Map([&ctx, &local](const model::Pixel& p) {

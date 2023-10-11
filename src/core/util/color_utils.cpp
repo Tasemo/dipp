@@ -2,7 +2,7 @@
 
 static const double FRACTION_SIZE = 1.0 / 7.0;
 
-inline cv::Vec3b get(double fraction) {
+cv::Vec3b get(double fraction) {
   assert(fraction >= 0 && fraction <= 1.0);
   if (fraction >= 0 * FRACTION_SIZE && fraction < 1 * FRACTION_SIZE) {
     unsigned char value = (fraction - 0 * FRACTION_SIZE) / FRACTION_SIZE * 255;

@@ -22,5 +22,5 @@ TEST(Downsampling, BasicTest) {
     auto result = downsampling.process(context, pixels);
     EXPECT_EQ(result.Size(), context.global_width * context.global_height / 2);
   };
-  run(1, 4, start_func);
+  run_thrill(1, 4, start_func);
 }

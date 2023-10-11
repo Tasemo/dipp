@@ -25,5 +25,5 @@ TEST(Threshold, BasicTest) {
       EXPECT_EQ(pixel.bgr_value, expected);
     }
   };
-  run(1, 4, start_func);
+  run_thrill(1, 4, start_func);
 }
