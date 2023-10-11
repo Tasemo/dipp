@@ -7,6 +7,7 @@
 #include <processing/threshold.hpp>
 #include <processing/write_image_to_disk.hpp>
 #include <thrill/api/context.hpp>
+#include <util/paint_bounding_boxes.hpp>
 #include <util/paint_clusters.hpp>
 
 struct CommandLineArgs {
@@ -24,9 +25,9 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
   model::Context context(ctx, args.global_width, args.global_height);
   model::SDSSContext sdss(context, args.start_ra, args.start_dec, args.scale);
   loading::SDSSImageLoader image_loader(sdss);
-
   auto image = image_loader.load_image();
   util::PaintClusters debug_clusters(context, image, image_loader.get_data_dir() + "clusters/");
+  util::PaintBoundingBoxes debug_boxes(context, image, image_loader.get_data_dir() + "boxes/");
 
   std::vector<model::Rect> bounding_boxes;
   if (context.rank == 0) {
@@ -34,6 +35,7 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
     bounding_boxes = validation_loader.load_bounding_boxes(image_loader.get_data_dir() + "validation.csv");
   }
   bounding_boxes = ctx.net.Broadcast(bounding_boxes, 0);
+  debug_boxes.paint(bounding_boxes);
 
   processing::ImageToDIA image_to_dia(image);
   processing::Threshold threshold(15);
