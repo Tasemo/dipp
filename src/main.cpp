@@ -5,7 +5,9 @@
 #include <model/sdss_context.hpp>
 #include <processing/image_to_dia.hpp>
 #include <processing/k_means.hpp>
+#include <processing/pixel_cluster_mapping.hpp>
 #include <processing/threshold.hpp>
+#include <processing/validation.hpp>
 #include <processing/write_image_to_disk.hpp>
 #include <thrill/api/context.hpp>
 #include <tlx/cmdline_parser.hpp>
@@ -60,6 +62,17 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
   auto k_means_chain = image_to_dia.add_next(threshold)->add_next(write_image_to_disk)->add_next(k_means);
   auto k_means_model = k_means_chain->process(context);
   debug_clusters.paint(k_means_model);
+
+  processing::PixelClusterMapping pixel_cluster_mapping(k_means_model);
+  processing::Validation validation(bounding_boxes);
+  auto validation_chain = image_to_dia.add_next(pixel_cluster_mapping)->add_next(validation);
+  auto result = validation_chain->process(context);
+  if (context.rank == 0) {
+    std::cout << "Total: " << result.total_clusters
+              << ", Cut: " << result.cut_clusters
+              << ", Uncut: " << result.uncut_clusters
+              << ", Not Found: " << result.not_found_clusters << '\n';
+  }
 }
 
 int main(int argc, const char *const *argv) {
