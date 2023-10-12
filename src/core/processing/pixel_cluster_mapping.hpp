@@ -18,7 +18,7 @@ class PixelClusterMapping : public Pipeline<thrill::DIA<model::Pixel>, thrill::D
 
  public:
   explicit PixelClusterMapping(const model::KMeansModel& model);
-  thrill::DIA<std::vector<model::Pixel>> process(const model::Context& /*ctx*/, const thrill::DIA<model::Pixel>& pixels) const override;
+  thrill::DIA<std::vector<model::Pixel>> process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels) const override;
 };
 
 }  // namespace processing

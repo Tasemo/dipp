@@ -19,7 +19,7 @@ class Downsampling : public Pipeline<thrill::DIA<model::Pixel>, thrill::DIA<mode
 
  public:
   explicit Downsampling(size_t factor);
-  thrill::DIA<model::Pixel> process(const model::Context& /*ctx*/, const thrill::DIA<model::Pixel>& pixels) const override;
+  thrill::DIA<model::Pixel> process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels) const override;
 };
 
 }  // namespace processing

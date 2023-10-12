@@ -2,10 +2,12 @@
 #include <loading/sdss_image_loader.hpp>
 #include <loading/sdss_validation_loader.hpp>
 #include <model/context.hpp>
+#include <model/distribution.hpp>
 #include <model/sdss_context.hpp>
 #include <processing/image_to_dia.hpp>
 #include <processing/k_means.hpp>
 #include <processing/pixel_cluster_mapping.hpp>
+#include <processing/pixel_worker_mapping.hpp>
 #include <processing/threshold.hpp>
 #include <processing/validation.hpp>
 #include <processing/write_image_to_disk.hpp>
@@ -15,6 +17,7 @@
 #include <util/paint_clusters.hpp>
 
 struct CommandLineArgs {
+  model::Distribution distribution{model::Distribution::LLOYD};
   size_t global_width{1024};
   size_t global_height{1024};
   double start_ra{180.0};
@@ -26,9 +29,13 @@ struct CommandLineArgs {
 };
 
 bool parse_command_line(CommandLineArgs &args, int argc, const char *const *argv) {
+  size_t distribution{2};
   tlx::CmdlineParser parser;
-  parser.set_description(R"(Distributed image processing pipeline with various distribution methods)");
+  parser.set_description(R"(Distributed image processing pipeline with various distribution methods:
+  trivial (1): generates equally sized and spaced sub-images
+  lloyd (2): image segmentation with k-means clustering (lloyd`s algorithm))");
   parser.set_author("Tim Oelkers <tim.oelkers@web.de>");
+  parser.add_size_t('m', "distribution", distribution, "distribution method, default 2 (lloyd)");
   parser.add_size_t('w', "width", args.global_width, "total image width, default: 1024");
   parser.add_size_t('h', "height", args.global_height, "total image height, default: 1024");
   parser.add_double('r', "start_ra", args.start_ra, "right-ascension (ra) of the top left corner of the SDSS image, default: 180.0");
@@ -36,7 +43,16 @@ bool parse_command_line(CommandLineArgs &args, int argc, const char *const *argv
   parser.add_double('s', "scale", args.scale, "scale in arcseconds per pixel of the SDSS image, default: 1.0");
   parser.add_size_t('i', "max_iterations", args.max_iteratations, "maximum number of k-means iterations, default: 10");
   parser.add_double('e', "epsilon", args.epsilon, "desired k-means accuracy, default: 1.0");
-  return parser.process(argc, argv);
+  if (!parser.process(argc, argv)) {
+    return false;
+  }
+  if (!model::is_valid_distribution(distribution)) {
+    std::cout << "Error: parameter \"method\" is invalid!\n\n";
+    parser.print_usage();
+    return false;
+  }
+  args.distribution = model::get_distribution(distribution);
+  return true;
 }
 
 void process(thrill::Context &ctx, const CommandLineArgs &args) {
@@ -56,22 +72,26 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
   debug_boxes.paint(bounding_boxes);
 
   processing::ImageToDIA image_to_dia(image);
-  processing::Threshold threshold(15);
-  processing::WriteImageToDisk write_image_to_disk(image_loader.get_data_dir() + "debug/");
-  processing::KMeans k_means(args.cluster_count, args.max_iteratations, args.epsilon);
-  auto k_means_chain = image_to_dia.add_next(threshold)->add_next(write_image_to_disk)->add_next(k_means);
-  auto k_means_model = k_means_chain->process(context);
-  debug_clusters.paint(k_means_model);
-
-  processing::PixelClusterMapping pixel_cluster_mapping(k_means_model);
   processing::Validation validation(bounding_boxes);
-  auto validation_chain = image_to_dia.add_next(pixel_cluster_mapping)->add_next(validation);
-  auto result = validation_chain->process(context);
+  processing::Result result{};
+  if (args.distribution == model::Distribution::LLOYD) {
+    processing::Threshold threshold(15);
+    processing::WriteImageToDisk write_image_to_disk(image_loader.get_data_dir() + "debug/");
+    processing::KMeans k_means(args.cluster_count, args.max_iteratations, args.epsilon);
+    auto k_means_chain = image_to_dia.add_next(threshold)->add_next(write_image_to_disk)->add_next(k_means);
+    auto k_means_model = k_means_chain->process(context);
+    debug_clusters.paint(k_means_model);
+
+    processing::PixelClusterMapping pixel_cluster_mapping(k_means_model);
+    auto validation_chain = image_to_dia.add_next(pixel_cluster_mapping)->add_next(validation);
+    result = validation_chain->process(context);
+  } else if (args.distribution == model::Distribution::TRIVIAL) {
+    processing::PixelWorkerMapping pixel_worker_mapping;
+    auto validation_chain = image_to_dia.add_next(pixel_worker_mapping)->add_next(validation);
+    result = validation_chain->process(context);
+  }
   if (context.rank == 0) {
-    std::cout << "Total: " << result.total_clusters
-              << ", Cut: " << result.cut_clusters
-              << ", Uncut: " << result.uncut_clusters
-              << ", Not Found: " << result.not_found_clusters << '\n';
+    std::cout << result << '\n';
   }
 }
 

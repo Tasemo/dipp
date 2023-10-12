@@ -4,6 +4,7 @@
 #include <model/pixel.hpp>
 #include <model/rect.hpp>
 #include <optional>
+#include <ostream>
 #include <processing/pipeline.hpp>
 #include <thrill/api/dia.hpp>
 #include <unordered_set>
@@ -22,6 +23,11 @@ struct Result {
   size_t not_found_clusters = 0;
 };
 
+inline std::ostream& operator<<(std::ostream& os, const Result& result) {
+  return os << "Total: " << result.total_clusters << ", Cut: " << result.cut_clusters
+            << ", Uncut: " << result.uncut_clusters << ", Not Found: " << result.not_found_clusters;
+}
+
 /**
  * @brief validates the found clusters by checking that no two clusters contain data from the same bounding box
  */
@@ -36,7 +42,7 @@ class Validation : public processing::Pipeline<thrill::DIA<std::vector<model::Pi
 
  public:
   explicit Validation(const std::vector<model::Rect>& bounding_boxes);
-  Result process(const model::Context& /*ctx*/, const thrill::DIA<std::vector<model::Pixel>>& clusters) const override;
+  Result process(const model::Context& ctx, const thrill::DIA<std::vector<model::Pixel>>& clusters) const override;
 };
 
 }  // namespace processing

@@ -24,7 +24,7 @@ class Threshold : public Pipeline<thrill::DIA<model::Pixel>, thrill::DIA<model::
    * @param perceived whether to use perceived color itensity
    */
   explicit Threshold(unsigned char cutoff, bool perceived = false);
-  thrill::DIA<model::Pixel> process(const model::Context& /*ctx*/, const thrill::DIA<model::Pixel>& pixels) const override;
+  thrill::DIA<model::Pixel> process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels) const override;
 };
 
 }  // namespace processing
