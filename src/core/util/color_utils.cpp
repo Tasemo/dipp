@@ -1,5 +1,7 @@
 #include "color_utils.hpp"
 
+#include <cassert>
+
 static const double FRACTION_SIZE = 1.0 / 7.0;
 
 cv::Vec3b get(double fraction) {

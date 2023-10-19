@@ -1,9 +1,11 @@
 #pragma once
 
+#include <cassert>
 #include <cstddef>
 #include <model/pixel.hpp>
 #include <opencv2/core/matx.hpp>
 #include <ostream>
+#include <thrill/data/serialization_cereal.hpp>
 
 namespace model {
 

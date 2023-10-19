@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <model/pixel.hpp>
 #include <ostream>
+#include <thrill/data/serialization_cereal.hpp>
 
 namespace model {
 

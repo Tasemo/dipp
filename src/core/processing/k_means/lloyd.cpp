@@ -1,9 +1,13 @@
-#include "k_means.hpp"
+#include "lloyd.hpp"
 
 #include <cstddef>
 #include <model/cluster.hpp>
 #include <model/context.hpp>
 #include <model/k_means_model.hpp>
+#include <processing/k_means/k_means_plus_plus.hpp>
+#include <processing/k_means/k_means_random.hpp>
+#include <stdexcept>
+#include <string>
 #include <thrill/api/all_gather.hpp>
 #include <thrill/api/cache.hpp>
 #include <thrill/api/collapse.hpp>
@@ -12,10 +16,23 @@
 #include <thrill/api/sample.hpp>
 #include <vector>
 
-processing::KMeans::KMeans(size_t cluster_count, size_t max_iteratations, size_t epsilon)
-    : _cluster_count(cluster_count), _max_iteratations(max_iteratations), _epsilon(epsilon) {}
+std::unique_ptr<processing::KMeansInit> get_implementation(model::KMeansInit init) {
+  switch (init) {
+    case model::KMeansInit::RANDOM:
+      return std::make_unique<processing::KMeansRandom>();
+    case model::KMeansInit::K_MEANS_PP:
+      return std::make_unique<processing::KMeansPlusPlus>();
+  }
+  throw std::invalid_argument("Unknown init option: " + std::to_string(init));
+}
 
-bool processing::KMeans::epsilon_reached(const model::KMeansModel& model, const std::vector<model::Pixel>& new_centers) const {
+processing::Lloyd::Lloyd(size_t cluster_count, size_t max_iteratations, size_t epsilon, model::KMeansInit init)
+    : _cluster_count(cluster_count),
+      _max_iteratations(max_iteratations),
+      _epsilon(epsilon),
+      _init(get_implementation(init)) {}
+
+bool processing::Lloyd::epsilon_reached(const model::KMeansModel& model, const std::vector<model::Pixel>& new_centers) const {
   for (size_t i = 0; i < new_centers.size(); i++) {
     if (new_centers[i].distance_to(model.centers[i]) > _epsilon) {
       return false;
@@ -24,10 +41,10 @@ bool processing::KMeans::epsilon_reached(const model::KMeansModel& model, const 
   return true;
 }
 
-model::KMeansModel processing::KMeans::process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels) const {
+model::KMeansModel processing::Lloyd::process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels) const {
   model::KMeansModel model;
   auto cached_pixels = pixels.Cache();
-  model.centers = cached_pixels.Sample(_cluster_count).AllGather();
+  model.centers = _init->generate(_cluster_count, cached_pixels);
   bool break_condition = false;
   for (size_t i = 0; i < _max_iteratations && !break_condition; i++) {
     auto closest = cached_pixels.Map([&model, &ctx](const model::Pixel& p) {
