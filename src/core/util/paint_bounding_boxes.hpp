@@ -15,7 +15,7 @@ namespace util {
 class PaintBoundingBoxes {
  private:
   const model::Context& _context;
-  cv::Mat& _image;
+  cv::Mat _image;
   const std::string _output_dir;
   const cv::Vec3b _color;
 

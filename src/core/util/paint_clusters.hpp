@@ -13,7 +13,7 @@ namespace util {
 class PaintClusters {
  private:
   const model::Context& _context;
-  cv::Mat& _image;
+  cv::Mat _image;
   const std::string _output_dir;
 
  public:

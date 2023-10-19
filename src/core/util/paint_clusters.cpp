@@ -5,7 +5,7 @@
 #include <util/color_utils.hpp>
 
 util::PaintClusters::PaintClusters(const model::Context& context, cv::Mat& image, const std::string& output_dir)
-    : _context(context), _image(image), _output_dir(output_dir) {
+    : _context(context), _image(image.clone()), _output_dir(output_dir) {
   std::filesystem::create_directories(output_dir);
 }
 

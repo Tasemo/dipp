@@ -5,7 +5,7 @@
 #include <opencv2/imgcodecs.hpp>
 
 util::PaintBoundingBoxes::PaintBoundingBoxes(const model::Context& context, cv::Mat& image, const std::string& output_dir, const cv::Vec3b& color)
-    : _context(context), _image(image), _output_dir(output_dir), _color(color) {
+    : _context(context), _image(image.clone()), _output_dir(output_dir), _color(color) {
   std::filesystem::create_directories(output_dir);
 }
 
