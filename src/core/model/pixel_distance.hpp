@@ -1,8 +1,8 @@
 #pragma once
 
 #include <model/pixel.hpp>
-#include <utility>
 #include <thrill/data/serialization_cereal.hpp>
+#include <utility>
 
 namespace model {
 

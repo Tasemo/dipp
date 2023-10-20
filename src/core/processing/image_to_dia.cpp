@@ -1,5 +1,13 @@
 #include "image_to_dia.hpp"
 
+#include <cstddef>
+#include <model/context.hpp>
+#include <model/pixel.hpp>
+#include <opencv2/core/mat.hpp>
+#include <opencv2/core/matx.hpp>
+#include <thrill/api/dia.hpp>
+#include <thrill/api/generate.hpp>
+
 processing::ImageToDIA::ImageToDIA(const cv::Mat& image)
     : _image(image) {}
 

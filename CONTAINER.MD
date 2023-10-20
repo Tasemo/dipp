@@ -36,7 +36,7 @@ cp configure.default.sh configure.sh
 source configure.sh
 ```
 
-Once the (local) cluster is set up, you can run the program on it by calling the ssh deploy script provided by thrill. You have to specify a list of hosts (-h), the directory where the program is found (-C), a SSH username (-u) and finally the program name and all necessary arguments. Note, that all environment variables specified in [configure.sh](./configure.default.sh) are also passed to each node. Make sure to set the "THRILL_NET" setting to the correct value (most likely tcp).
+Once the (local) cluster is set up, you can run the program on it by calling the ssh deploy script provided by thrill. You have to specify a list of hosts (-h), the directory where the program is found (-C), a SSH username (-u) and finally the program name and all necessary arguments.
 
 ```shell
 ./bin/deploy/ssh/invoke.sh -h "172.17.0.2:12345 172.17.0.3:12345" -C "/app/bin" -u "cluster" main

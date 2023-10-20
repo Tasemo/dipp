@@ -1,6 +1,16 @@
 #include "write_image_to_disk.hpp"
 
+#include <opencv2/core/hal/interface.h>
+
+#include <cstddef>
 #include <filesystem>
+#include <model/context.hpp>
+#include <model/pixel.hpp>
+#include <opencv2/core/mat.hpp>
+#include <opencv2/core/matx.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <string>
+#include <thrill/api/dia.hpp>
 #include <vector>
 
 processing::WriteImageToDisk::WriteImageToDisk(const std::string& output_folder, const cv::Vec3b& missing_color)

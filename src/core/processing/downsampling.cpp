@@ -1,5 +1,10 @@
 #include "downsampling.hpp"
 
+#include <cstddef>
+#include <model/context.hpp>
+#include <model/pixel.hpp>
+#include <thrill/api/dia.hpp>
+
 processing::Downsampling::Downsampling(size_t factor)
     : _factor(factor) {}
 

@@ -1,6 +1,10 @@
 #include "color_utils.hpp"
 
+#include <algorithm>
 #include <cassert>
+#include <cstddef>
+#include <opencv2/core/matx.hpp>
+#include <vector>
 
 static const double FRACTION_SIZE = 1.0 / 7.0;
 

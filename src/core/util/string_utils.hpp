@@ -17,14 +17,14 @@ namespace util {
  */
 template <typename T>
 inline std::string to_string(const T& value) {
+  if constexpr (std::is_same_v<T, std::string>) {
+    return value;
+  }
   if constexpr (
-      std::is_same_v<T, std::string> ||
+      std::is_same_v<T, std::string_view> ||
       std::is_same_v<std::decay_t<T>, char*> ||
       std::is_same_v<T, const char*>
   ) {
-    return value;
-  }
-  if constexpr (std::is_same_v<T, std::string_view>) {
     return std::string(value);
   }
   std::ostringstream oss;

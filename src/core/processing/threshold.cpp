@@ -1,5 +1,9 @@
 #include "threshold.hpp"
 
+#include <model/context.hpp>
+#include <model/pixel.hpp>
+#include <thrill/api/dia.hpp>
+
 processing::Threshold::Threshold(unsigned char cutoff, bool perceived)
     : _cutoff(cutoff), _perceived(perceived) {}
 

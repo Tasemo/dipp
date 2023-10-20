@@ -1,10 +1,13 @@
 #include <gtest/gtest.h>
+#include <opencv2/core/hal/interface.h>
 
 #include <cmath>
 #include <model/context.hpp>
 #include <model/pixel.hpp>
 #include <opencv2/core/mat.hpp>
+#include <opencv2/core/matx.hpp>
 #include <processing/image_to_dia.hpp>
+#include <thrill/api/context.hpp>
 #include <thrill/api/gather.hpp>
 #include <vector>
 

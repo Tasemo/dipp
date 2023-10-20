@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <cstddef>
 #include <stdexcept>
 #include <string>
 #include <util/csv_reader.hpp>

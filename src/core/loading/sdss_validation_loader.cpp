@@ -1,13 +1,20 @@
 #include "sdss_validation_loader.hpp"
 
+#include <cstddef>
 #include <filesystem>
+#include <lift/http.hpp>
 #include <lift/request.hpp>
+#include <lift/response.hpp>
+#include <model/rect.hpp>
+#include <model/sdss_context.hpp>
+#include <string>
 #include <string_view>
 #include <util/csv_reader.hpp>
 #include <util/file_utils.hpp>
 #include <util/math_utils.hpp>
 #include <util/network_utils.hpp>
 #include <util/query_builder.hpp>
+#include <vector>
 
 static const std::string BASE_URL = "https://skyserver.sdss.org/dr18/SkyServerWS/SearchTools/SqlSearch?";
 static const size_t FIELD_X_PIXELS = 2048;

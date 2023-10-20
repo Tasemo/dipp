@@ -1,7 +1,15 @@
 #include "validation.hpp"
 
+#include <cstddef>
+#include <model/context.hpp>
+#include <model/pixel.hpp>
+#include <model/rect.hpp>
+#include <optional>
 #include <thrill/api/all_gather.hpp>
+#include <thrill/api/dia.hpp>
 #include <thrill/api/reduce_by_key.hpp>
+#include <unordered_set>
+#include <vector>
 
 processing::Validation::Validation(const std::vector<model::Rect>& bounding_boxes)
     : _bounding_boxes(bounding_boxes) {}

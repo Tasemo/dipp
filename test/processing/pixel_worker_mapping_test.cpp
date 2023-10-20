@@ -5,6 +5,7 @@
 #include <model/pixel.hpp>
 #include <opencv2/core/matx.hpp>
 #include <processing/pixel_worker_mapping.hpp>
+#include <thrill/api/context.hpp>
 #include <thrill/api/gather.hpp>
 #include <thrill/api/generate.hpp>
 

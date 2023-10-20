@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <opencv2/core/matx.hpp>
 #include <util/color_utils.hpp>
 
 TEST(ColorUtils, BasicTest) {

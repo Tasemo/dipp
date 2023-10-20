@@ -1,11 +1,13 @@
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <model/context.hpp>
 #include <model/k_means_model.hpp>
 #include <model/pixel.hpp>
 #include <opencv2/core/matx.hpp>
 #include <processing/pixel_cluster_mapping.hpp>
 #include <thrill/api/concat_to_dia.hpp>
+#include <thrill/api/context.hpp>
 #include <thrill/api/gather.hpp>
 #include <vector>
 

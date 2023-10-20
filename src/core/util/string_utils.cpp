@@ -1,6 +1,9 @@
 #include "string_utils.hpp"
 
 #include <algorithm>
+#include <cstddef>
+#include <string_view>
+#include <vector>
 
 std::vector<std::string_view> util::split(std::string_view string, std::string_view delimiters, size_t skip_lines, char skip_char) {
   std::vector<std::string_view> substrings;

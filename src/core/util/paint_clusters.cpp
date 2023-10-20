@@ -1,7 +1,14 @@
 #include "paint_clusters.hpp"
 
+#include <cstddef>
 #include <filesystem>
+#include <model/context.hpp>
+#include <model/k_means_model.hpp>
+#include <model/pixel.hpp>
+#include <opencv2/core/mat.hpp>
+#include <opencv2/core/matx.hpp>
 #include <opencv2/imgcodecs.hpp>
+#include <string>
 #include <util/color_utils.hpp>
 
 util::PaintClusters::PaintClusters(const model::Context& context, cv::Mat& image, const std::string& output_dir)

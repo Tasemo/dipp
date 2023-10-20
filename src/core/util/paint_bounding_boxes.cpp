@@ -1,8 +1,15 @@
 #include "paint_bounding_boxes.hpp"
 
 #include <algorithm>
+#include <cstddef>
 #include <filesystem>
+#include <model/context.hpp>
+#include <model/rect.hpp>
+#include <opencv2/core/mat.hpp>
+#include <opencv2/core/matx.hpp>
 #include <opencv2/imgcodecs.hpp>
+#include <string>
+#include <vector>
 
 util::PaintBoundingBoxes::PaintBoundingBoxes(const model::Context& context, cv::Mat& image, const std::string& output_dir, const cv::Vec3b& color)
     : _context(context), _image(image.clone()), _output_dir(output_dir), _color(color) {

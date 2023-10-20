@@ -1,8 +1,13 @@
 #include <gtest/gtest.h>
 
 #include <algorithm>
+#include <cstddef>
+#include <model/context.hpp>
 #include <model/k_means_init.hpp>
+#include <model/pixel.hpp>
+#include <opencv2/core/matx.hpp>
 #include <processing/k_means/lloyd.hpp>
+#include <thrill/api/context.hpp>
 #include <thrill/api/generate.hpp>
 
 #include "../../common.hpp"

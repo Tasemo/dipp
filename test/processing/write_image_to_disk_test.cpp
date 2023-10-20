@@ -1,11 +1,14 @@
 #include <gtest/gtest.h>
 
+#include <cstddef>
 #include <filesystem>
 #include <model/context.hpp>
+#include <model/pixel.hpp>
 #include <opencv2/core/matx.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <processing/write_image_to_disk.hpp>
 #include <string>
+#include <thrill/api/context.hpp>
 #include <thrill/api/generate.hpp>
 
 #include "../common.hpp"

@@ -1,6 +1,12 @@
 #include "pixel_cluster_mapping.hpp"
 
+#include <cstddef>
+#include <model/context.hpp>
+#include <model/k_means_model.hpp>
+#include <model/pixel.hpp>
+#include <thrill/api/dia.hpp>
 #include <thrill/api/group_by_key.hpp>
+#include <vector>
 
 processing::PixelClusterMapping::PixelClusterMapping(const model::KMeansModel& model)
     : _model(model) {}

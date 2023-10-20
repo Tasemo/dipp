@@ -1,9 +1,11 @@
 #include <cstdlib>
+#include <iostream>
 #include <loading/sdss_image_loader.hpp>
 #include <loading/sdss_validation_loader.hpp>
 #include <model/context.hpp>
 #include <model/distribution.hpp>
 #include <model/k_means_init.hpp>
+#include <model/rect.hpp>
 #include <model/sdss_context.hpp>
 #include <processing/image_to_dia.hpp>
 #include <processing/k_means/lloyd.hpp>
@@ -16,6 +18,7 @@
 #include <tlx/cmdline_parser.hpp>
 #include <util/paint_bounding_boxes.hpp>
 #include <util/paint_clusters.hpp>
+#include <vector>
 
 struct CommandLineArgs {
   model::Distribution distribution{model::Distribution::LLOYD};

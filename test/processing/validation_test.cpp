@@ -3,8 +3,10 @@
 #include <model/context.hpp>
 #include <model/pixel.hpp>
 #include <model/rect.hpp>
+#include <opencv2/core/matx.hpp>
 #include <processing/validation.hpp>
 #include <thrill/api/concat_to_dia.hpp>
+#include <thrill/api/context.hpp>
 #include <vector>
 
 #include "../common.hpp"

@@ -1,4 +1,7 @@
+#include <cstddef>
+#include <string_view>
 #include <util/string_utils.hpp>
+#include <vector>
 
 #include "csv_reader.hpp"
 

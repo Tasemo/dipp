@@ -1,7 +1,12 @@
 #include "sdss_image_loader.hpp"
 
+#include <opencv2/core/hal/interface.h>
+
 #include <filesystem>
+#include <lift/http.hpp>
 #include <lift/request.hpp>
+#include <lift/response.hpp>
+#include <model/sdss_context.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <string>

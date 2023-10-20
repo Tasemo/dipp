@@ -1,9 +1,13 @@
 #include "lloyd.hpp"
 
 #include <cstddef>
+#include <memory>
 #include <model/cluster.hpp>
 #include <model/context.hpp>
+#include <model/k_means_init.hpp>
 #include <model/k_means_model.hpp>
+#include <model/pixel.hpp>
+#include <processing/k_means/k_means_init.hpp>
 #include <processing/k_means/k_means_plus_plus.hpp>
 #include <processing/k_means/k_means_random.hpp>
 #include <stdexcept>

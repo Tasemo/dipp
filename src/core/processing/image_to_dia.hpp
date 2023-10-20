@@ -1,9 +1,10 @@
 #pragma once
 
+#include <model/context.hpp>
 #include <model/pixel.hpp>
-#include <opencv2/core.hpp>
+#include <opencv2/core/mat.hpp>
 #include <processing/pipeline.hpp>
-#include <thrill/api/generate.hpp>
+#include <thrill/api/dia.hpp>
 
 namespace processing {
 
