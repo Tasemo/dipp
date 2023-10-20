@@ -7,6 +7,9 @@
 
 namespace processing {
 
+/**
+ * @brief interface for a k-means initialization strategy
+ */
 class KMeansInit {
  public:
   virtual ~KMeansInit() = default;
