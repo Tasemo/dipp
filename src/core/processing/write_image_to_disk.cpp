@@ -10,6 +10,7 @@
 #include <opencv2/core/matx.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <string>
+#include <thrill/api/cache.hpp>
 #include <thrill/api/dia.hpp>
 #include <vector>
 

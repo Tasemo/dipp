@@ -5,6 +5,7 @@
 #include <model/pixel.hpp>
 #include <thrill/api/cache.hpp>
 #include <thrill/api/dia.hpp>
+#include <thrill/net/flow_control_channel.hpp>
 #include <vector>
 
 static const model::Pixel EMPTY_PIXEL = model::Pixel(cv::Vec2d{-1, -1}, cv::Vec3b{});
@@ -38,7 +39,7 @@ size_t count_clusters(std::vector<std::vector<model::Pixel>>& grid) {
   return count;
 }
 
-processing::Estimation processing::EstimateClusters::process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels) const {
+processing::ClusterEstimation processing::EstimateClusters::process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels) const {
   std::vector<std::vector<model::Pixel>> grid(ctx.local_height, std::vector<model::Pixel>(ctx.local_width, EMPTY_PIXEL));
   auto to_local = pixels.Map([&ctx, &grid](const model::Pixel& p) {
     size_t local_x = ctx.to_local_x(p.location[0]);
@@ -47,6 +48,7 @@ processing::Estimation processing::EstimateClusters::process(const model::Contex
     return p;
   });
   auto cached = to_local.Cache().Execute();
-  auto count = count_clusters(grid);
-  return Estimation{cached, count};
+  auto local_count = count_clusters(grid);
+  auto global_count = ctx.ctx.net.AllReduce(local_count);
+  return ClusterEstimation{cached, local_count, global_count};
 }

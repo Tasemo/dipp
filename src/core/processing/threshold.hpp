@@ -3,7 +3,6 @@
 #include <model/context.hpp>
 #include <model/pixel.hpp>
 #include <processing/pipeline.hpp>
-#include <thrill/api/collapse.hpp>
 #include <thrill/api/dia.hpp>
 
 namespace processing {

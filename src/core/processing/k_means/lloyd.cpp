@@ -45,10 +45,10 @@ bool processing::Lloyd::epsilon_reached(const model::KMeansModel& model, const s
   return true;
 }
 
-model::KMeansModel processing::Lloyd::process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels) const {
+model::KMeansModel processing::Lloyd::process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels, size_t cluster_count) const {
   model::KMeansModel model;
   auto cached_pixels = pixels.Cache();
-  model.centers = _init->generate(_cluster_count, cached_pixels);
+  model.centers = _init->generate(cluster_count, cached_pixels);
   bool break_condition = false;
   for (size_t i = 0; i < _max_iteratations && !break_condition; i++) {
     auto closest = cached_pixels.Map([&model, &ctx](const model::Pixel& p) {
@@ -74,4 +74,13 @@ model::KMeansModel processing::Lloyd::process(const model::Context& ctx, const t
     model.centers = new_centers;
   }
   return model;
+}
+
+model::KMeansModel processing::Lloyd::process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels) const {
+  return process(ctx, pixels, _cluster_count);
+}
+
+model::KMeansModel processing::Lloyd::process(const model::Context& ctx, const ClusterEstimation& estimation) const {
+  std::cout << "Estimated: " << estimation.global_cluster_count << "\n";
+  return process(ctx, estimation.pixels, estimation.global_cluster_count);
 }

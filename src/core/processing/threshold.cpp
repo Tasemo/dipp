@@ -2,6 +2,7 @@
 
 #include <model/context.hpp>
 #include <model/pixel.hpp>
+#include <thrill/api/collapse.hpp>
 #include <thrill/api/dia.hpp>
 
 processing::Threshold::Threshold(unsigned char cutoff, bool perceived)
