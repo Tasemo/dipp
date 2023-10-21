@@ -49,7 +49,7 @@ struct SDSSContext {
    */
   const double local_start_dec;
   /**
-   * @brief a key to identify unique SDSS data sets, based on starting point, size and number of workers
+   * @brief a key to identify unique SDSS data sets, based on starting point, size, scale and number of workers
    */
   const std::string file_key;
 
@@ -71,7 +71,8 @@ struct SDSSContext {
             util::to_string(start_ra) + 'x' +
             util::to_string(start_dec) + 'x' +
             util::to_string(context.local_width) + 'x' +
-            util::to_string(context.local_height)
+            util::to_string(context.local_height) + 'x' +
+            util::to_string(scale_arc)
         ) {}
 
   /**

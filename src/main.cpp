@@ -31,7 +31,7 @@ struct CommandLineArgs {
   size_t global_height{1024};
   double start_ra{180.0};
   double start_dec{0.0};
-  double scale{1.0};
+  double scale{0.315};
   size_t cluster_count{0};
   size_t max_iteratations{10};
   double epsilon{1.0};
@@ -50,7 +50,7 @@ bool parse_command_line(CommandLineArgs &args, int argc, const char *const *argv
   parser.add_size_t('h', "height", args.global_height, "total image height, default: 1024");
   parser.add_double('r', "start_ra", args.start_ra, "right-ascension (ra) of the top left corner of the SDSS image, default: 180.0");
   parser.add_double('d', "start_dec", args.start_dec, "declination (dec) of the top left corner of the SDSS image, default: 0.0");
-  parser.add_double('s', "scale", args.scale, "scale in arcseconds per pixel of the SDSS image, ldefault: 1.0");
+  parser.add_double('s', "scale", args.scale, "scale in arcseconds per pixel of the SDSS image, default: 0.315");
   parser.add_size_t('i', "max_iterations", args.max_iteratations, "maximum number of k-means iterations, default: 10");
   parser.add_double('e', "epsilon", args.epsilon, "desired k-means accuracy, default: 1.0");
   parser.add_size_t('y', "init_strategy", k_means_init, "k-means init strategy (1 - random, 2 - k-means++), default: 1");
