@@ -89,7 +89,7 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
   debug_boxes.paint(bounding_boxes);
   processing::ImageToDIA image_to_dia(image);
   processing::Validation validation(bounding_boxes);
-  processing::Result result{};
+  processing::Result result;
   if (args.distribution == model::Distribution::LLOYD) {
     processing::Threshold threshold(15);
     processing::WriteImageToDisk write_image_to_disk(image_loader.get_data_dir() + "debug/");
@@ -97,7 +97,7 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
     auto k_means_chain = image_to_dia.add_next(threshold)->add_next(write_image_to_disk);
     model::KMeansModel k_means_model;
     if (args.cluster_count == 0) {
-      processing::EstimateClusters estimate;
+      processing::EstimateClusters estimate(11);
       auto chain = k_means_chain->add_next(estimate)->add_next(k_means);
       k_means_model = chain->process(context);
     } else {

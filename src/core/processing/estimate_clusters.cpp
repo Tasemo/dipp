@@ -10,34 +10,38 @@
 
 static const model::Pixel EMPTY_PIXEL = model::Pixel(cv::Vec2d{-1, -1}, cv::Vec3b{});
 
-void depth_search(std::vector<std::vector<model::Pixel>>& grid, int y, int x) {
+size_t calculate_cluster_size(std::vector<std::vector<model::Pixel>>& grid, int y, int x) {
   if (y < 0 || x < 0) {
-    return;
+    return 0;
   }
   auto positive_x = static_cast<size_t>(x);
   auto positive_y = static_cast<size_t>(y);
   if (positive_y >= grid.size() || positive_x >= grid[positive_y].size() || grid[positive_y][positive_x] == EMPTY_PIXEL) {
-    return;
+    return 0;
   }
   grid[positive_y][positive_x] = EMPTY_PIXEL;
-  depth_search(grid, y + 1, x);
-  depth_search(grid, y - 1, x);
-  depth_search(grid, y, x + 1);
-  depth_search(grid, y, x - 1);
+  return 1 + calculate_cluster_size(grid, y + 1, x) +
+         calculate_cluster_size(grid, y - 1, x) +
+         calculate_cluster_size(grid, y, x + 1) +
+         calculate_cluster_size(grid, y, x - 1);
 }
 
-size_t count_clusters(std::vector<std::vector<model::Pixel>>& grid) {
+size_t processing::EstimateClusters::count_clusters(std::vector<std::vector<model::Pixel>>& grid) const {
   size_t count = 0;
   for (size_t y = 0; y < grid.size(); y++) {
     for (size_t x = 0; x < grid[y].size(); x++) {
       if (grid[y][x] != EMPTY_PIXEL) {
-        depth_search(grid, y, x);
-        count++;
+        if (calculate_cluster_size(grid, y, x) >= _min_cluster_size) {
+          count++;
+        }
       }
     }
   }
   return count;
 }
+
+processing::EstimateClusters::EstimateClusters(size_t min_cluster_size)
+    : _min_cluster_size(min_cluster_size) {}
 
 processing::ClusterEstimation processing::EstimateClusters::process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels) const {
   std::vector<std::vector<model::Pixel>> grid(ctx.local_height, std::vector<model::Pixel>(ctx.local_width, EMPTY_PIXEL));
