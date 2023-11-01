@@ -52,7 +52,7 @@ bool parse_command_line(CommandLineArgs &args, int argc, const char *const *argv
   parser.add_double('s', "scale", args.scale, "scale in arcseconds per pixel of the SDSS image, default: 0.315");
   parser.add_size_t('i', "max_iterations", args.max_iteratations, "maximum number of k-means iterations, default: 10");
   parser.add_double('e', "epsilon", args.epsilon, "desired k-means accuracy, default: 1.0");
-  parser.add_size_t('y', "init_strategy", k_means_init, "k-means init strategy (1 - random, 2 - k-means++), default: 1");
+  parser.add_size_t('y', "init_strategy", k_means_init, "k-means init strategy (1 - random, 2 - random partition (forgy), 3 - k-means++), default: 1");
   parser.add_size_t('c', "cluster_count", args.cluster_count, "k-means cluster count, 0 for estimation, default: 0");
   if (!parser.process(argc, argv)) {
     return false;

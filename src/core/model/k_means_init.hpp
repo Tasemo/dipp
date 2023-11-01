@@ -6,7 +6,8 @@ namespace model {
 
 enum KMeansInit {
   RANDOM = 1,
-  K_MEANS_PP = 2
+  RANDOM_PARTITION = 2,
+  K_MEANS_PP = 3
 };
 
 inline bool is_valid_k_means_init(size_t value) {

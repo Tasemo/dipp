@@ -10,6 +10,7 @@
 #include <processing/k_means/init/init_strategy.hpp>
 #include <processing/k_means/init/k_means_plus_plus.hpp>
 #include <processing/k_means/init/random.hpp>
+#include <processing/k_means/init/random_partition.hpp>
 #include <stdexcept>
 #include <string>
 #include <thrill/api/all_gather.hpp>
@@ -24,6 +25,8 @@ std::unique_ptr<processing::InitStrategy> get_implementation(model::KMeansInit i
   switch (init) {
     case model::KMeansInit::RANDOM:
       return std::make_unique<processing::KMeansRandom>();
+    case model::KMeansInit::RANDOM_PARTITION:
+      return std::make_unique<processing::KMeansRandomPartition>();
     case model::KMeansInit::K_MEANS_PP:
       return std::make_unique<processing::KMeansPlusPlus>();
   }
