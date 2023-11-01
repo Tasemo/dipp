@@ -6,7 +6,7 @@
 #include <model/k_means_init.hpp>
 #include <model/k_means_model.hpp>
 #include <processing/estimate_clusters.hpp>
-#include <processing/k_means/k_means_init.hpp>
+#include <processing/k_means/init/init_strategy.hpp>
 #include <processing/pipeline.hpp>
 #include <thrill/api/dia.hpp>
 
@@ -18,7 +18,7 @@ class Lloyd : public Pipeline<thrill::DIA<model::Pixel>, model::KMeansModel>,
   size_t _cluster_count;
   size_t _max_iteratations;
   double _epsilon;
-  std::unique_ptr<KMeansInit> _init;
+  std::unique_ptr<InitStrategy> _init;
 
   bool epsilon_reached(const model::KMeansModel& model, const std::vector<model::Pixel>& new_centers) const;
   model::KMeansModel process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels, size_t cluster_count) const;

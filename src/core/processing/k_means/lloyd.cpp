@@ -7,9 +7,9 @@
 #include <model/k_means_init.hpp>
 #include <model/k_means_model.hpp>
 #include <model/pixel.hpp>
-#include <processing/k_means/k_means_init.hpp>
-#include <processing/k_means/k_means_plus_plus.hpp>
-#include <processing/k_means/k_means_random.hpp>
+#include <processing/k_means/init/init_strategy.hpp>
+#include <processing/k_means/init/k_means_plus_plus.hpp>
+#include <processing/k_means/init/random.hpp>
 #include <stdexcept>
 #include <string>
 #include <thrill/api/all_gather.hpp>
@@ -20,7 +20,7 @@
 #include <thrill/api/sample.hpp>
 #include <vector>
 
-std::unique_ptr<processing::KMeansInit> get_implementation(model::KMeansInit init) {
+std::unique_ptr<processing::InitStrategy> get_implementation(model::KMeansInit init) {
   switch (init) {
     case model::KMeansInit::RANDOM:
       return std::make_unique<processing::KMeansRandom>();

@@ -10,9 +10,9 @@ namespace processing {
 /**
  * @brief interface for a k-means initialization strategy
  */
-class KMeansInit {
+class InitStrategy {
  public:
-  virtual ~KMeansInit() = default;
+  virtual ~InitStrategy() = default;
   virtual std::vector<model::Pixel> generate(size_t cluster_count, const thrill::DIA<model::Pixel>& pixels) const = 0;
 };
 

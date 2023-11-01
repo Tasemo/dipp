@@ -1,4 +1,4 @@
-#include "k_means_random.hpp"
+#include "random.hpp"
 
 #include <cassert>
 #include <cstddef>

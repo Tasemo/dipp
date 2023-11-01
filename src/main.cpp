@@ -5,6 +5,7 @@
 #include <model/context.hpp>
 #include <model/distribution.hpp>
 #include <model/k_means_init.hpp>
+#include <model/k_means_model.hpp>
 #include <model/rect.hpp>
 #include <model/sdss_context.hpp>
 #include <processing/estimate_clusters.hpp>
@@ -22,8 +23,6 @@
 #include <util/paint_bounding_boxes.hpp>
 #include <util/paint_clusters.hpp>
 #include <vector>
-
-#include "model/k_means_model.hpp"
 
 struct CommandLineArgs {
   model::Distribution distribution{model::Distribution::LLOYD};

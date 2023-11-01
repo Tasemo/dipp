@@ -2,12 +2,12 @@
 
 #include <model/pixel.hpp>
 #include <opencv2/core/matx.hpp>
-#include <processing/k_means/k_means_plus_plus.hpp>
+#include <processing/k_means/init/k_means_plus_plus.hpp>
 #include <thrill/api/context.hpp>
 #include <thrill/api/equal_to_dia.hpp>
 #include <vector>
 
-#include "../../common.hpp"
+#include "../../../common.hpp"
 
 TEST(KMeansPlusPlus, BasicTest) {
   auto start_func = [](thrill::Context& ctx) {
