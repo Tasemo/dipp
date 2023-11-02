@@ -8,6 +8,7 @@ namespace model {
 
 struct KMeansModel {
   size_t iterations{};
+  size_t requested{};
   std::vector<model::Pixel> centers;
 
   size_t nearest_cluster(const model::Pixel& pixel, size_t start = 0) const {

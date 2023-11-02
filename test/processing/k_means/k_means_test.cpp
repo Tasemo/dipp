@@ -22,6 +22,7 @@ TEST(KMeans, BasicTest) {
     });
     processing::KMeans k_means(ctx.num_workers(), 10, 1.0, model::KMeansInit::RANDOM, model::Distribution::LLOYD);
     auto model = k_means.process(context, pixels);
+    EXPECT_EQ(model.requested, ctx.num_workers());
     EXPECT_EQ(model.centers.size(), ctx.num_workers());
   };
   run_thrill(1, 2, start_func);

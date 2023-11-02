@@ -6,16 +6,16 @@
 #include <model/k_means_model.hpp>
 #include <model/pixel.hpp>
 #include <opencv2/core/matx.hpp>
-#include <processing/k_means/lloyd.hpp>
+#include <processing/k_means/bisecting.hpp>
 #include <thrill/api/context.hpp>
 #include <thrill/api/generate.hpp>
 #include <vector>
 
 #include "../../common.hpp"
 
-TEST(Lloyd, BasicTest) {
+TEST(Bisecting, BasicTest) {
   auto start_func = [](thrill::Context& ctx) {
-    model::Context context(ctx, 10, 10);
+    model::Context context(ctx, 16, 16);
     std::vector<model::Pixel> centers;
     for (size_t i = 0; i < ctx.num_workers(); i++) {
       auto location = cv::Vec2d{i * 4.0, i * 4.0};
@@ -25,8 +25,8 @@ TEST(Lloyd, BasicTest) {
       return centers[context.rank];
     });
     model::KMeansModel model{0, centers.size(), centers};
-    processing::Lloyd lloyd;
-    auto result = lloyd.perform(context, model, pixels);
+    processing::Bisecting bisecting;
+    auto result = bisecting.perform(context, model, pixels);
     EXPECT_EQ(result.size(), ctx.num_workers());
     for (size_t i = 0; i < result.size(); i++) {
       EXPECT_EQ(result[i], centers[i]);

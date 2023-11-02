@@ -8,6 +8,7 @@
 #include <model/k_means_init.hpp>
 #include <model/k_means_model.hpp>
 #include <model/pixel.hpp>
+#include <processing/k_means/bisecting.hpp>
 #include <processing/k_means/init/init_strategy.hpp>
 #include <processing/k_means/init/k_means_plus_plus.hpp>
 #include <processing/k_means/init/random.hpp>
@@ -41,6 +42,8 @@ std::unique_ptr<processing::KMeansStrategy> get_implementation(model::Distributi
   switch (distribution) {
     case model::Distribution::LLOYD:
       return std::make_unique<processing::Lloyd>();
+    case model::Distribution::BISECTING:
+      return std::make_unique<processing::Bisecting>();
     default:
       throw std::invalid_argument("Unknown distribution option: " + std::to_string(distribution));
       break;
@@ -65,16 +68,22 @@ bool processing::KMeans::epsilon_reached(const model::KMeansModel& model, const 
 
 model::KMeansModel processing::KMeans::process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels, size_t cluster_count) const {
   model::KMeansModel model;
+  model.requested = cluster_count;
   auto cached_pixels = pixels.Cache();
-  model.centers = _init->generate(cluster_count, cached_pixels);
-  bool break_condition = false;
-  for (size_t i = 0; i < _max_iteratations && !break_condition; i++) {
-    auto new_centers = _impl->perform(ctx, model, cached_pixels);
-    if (_epsilon > 0) {
-      break_condition = epsilon_reached(model, new_centers);
+  size_t initial_count = _impl->get_initial_cluster_count(cluster_count);
+  if (initial_count == cluster_count) {
+    model.centers = _init->generate(initial_count, cached_pixels);
+    bool break_condition = false;
+    for (size_t i = 0; i < _max_iteratations && !break_condition; i++) {
+      auto new_centers = _impl->perform(ctx, model, cached_pixels);
+      if (_epsilon > 0) {
+        break_condition = epsilon_reached(model, new_centers);
+      }
+      model.iterations++;
+      model.centers = new_centers;
     }
-    model.iterations++;
-    model.centers = new_centers;
+  } else {
+    model.centers = _impl->perform(ctx, model, cached_pixels);
   }
   return model;
 }

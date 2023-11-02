@@ -43,7 +43,8 @@ bool parse_command_line(CommandLineArgs &args, int argc, const char *const *argv
   tlx::CmdlineParser parser;
   parser.set_description(R"(Distributed image processing pipeline with various distribution methods:
   trivial (1): generates equally sized and spaced sub-images
-  lloyd (2): image segmentation with k-means clustering (lloyd`s algorithm))");
+  lloyd (2): image segmentation with k-means (lloyd`s algorithm))
+  bisecting (3): image segmentation with bisecting k-means)");
   parser.set_author("Tim Oelkers <tim.oelkers@web.de>");
   parser.add_size_t('m', "distribution", distribution, "distribution method, default: 2 (lloyd)");
   parser.add_size_t('w', "width", args.global_width, "total image width, default: 1024");

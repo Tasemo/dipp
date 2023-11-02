@@ -11,7 +11,7 @@
 #include <thrill/api/dia.hpp>
 #include <thrill/api/reduce_by_key.hpp>
 
-std::vector<model::Pixel> processing::Lloyd::perform(const model::Context& ctx, model::KMeansModel model, const thrill::DIA<model::Pixel>& pixels) const {
+std::vector<model::Pixel> processing::Lloyd::perform(const model::Context& ctx, const model::KMeansModel& model, const thrill::DIA<model::Pixel>& pixels) const {
   auto closest = pixels.Map([&model, &ctx](const model::Pixel& p) {
     size_t cluster_index = model.nearest_cluster(p, ctx.rank);
     return model::Cluster{p, cluster_index, 1};

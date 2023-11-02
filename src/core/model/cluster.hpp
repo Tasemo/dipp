@@ -23,6 +23,22 @@ struct Cluster {
   }
 };
 
+inline bool operator<(const Cluster& lhs, const Cluster& rhs) {
+  return lhs.count < rhs.count;
+}
+
+inline bool operator>(const Cluster& lhs, const Cluster& rhs) {
+  return lhs.count > rhs.count;
+}
+
+inline bool operator<=(const Cluster& lhs, const Cluster& rhs) {
+  return lhs.count <= rhs.count;
+}
+
+inline bool operator>=(const Cluster& lhs, const Cluster& rhs) {
+  return lhs.count >= rhs.count;
+}
+
 inline std::ostream& operator<<(std::ostream& os, const Cluster& cluster) {
   return os << '(' << cluster.center << ',' << cluster.cluster_index << ',' << cluster.count << ')';
 }
