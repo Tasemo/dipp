@@ -10,6 +10,7 @@
 #include <model/sdss_context.hpp>
 #include <processing/estimate_clusters.hpp>
 #include <processing/image_to_dia.hpp>
+#include <processing/k_means/k_means.hpp>
 #include <processing/k_means/lloyd.hpp>
 #include <processing/pipeline.hpp>
 #include <processing/pixel_cluster_mapping.hpp>
@@ -92,7 +93,7 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
   if (args.distribution == model::Distribution::LLOYD) {
     processing::Threshold threshold(15);
     processing::WriteImageToDisk write_image_to_disk(image_loader.get_data_dir() + "debug/");
-    processing::Lloyd k_means(args.cluster_count, args.max_iteratations, args.epsilon, args.init);
+    processing::KMeans k_means(args.cluster_count, args.max_iteratations, args.epsilon, args.init, args.distribution);
     auto k_means_chain = image_to_dia.add_next(threshold)->add_next(write_image_to_disk);
     model::KMeansModel k_means_model;
     if (args.cluster_count == 0) {
