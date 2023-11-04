@@ -12,10 +12,10 @@ struct KMeansModel {
   std::vector<model::Pixel> centers;
 
   size_t nearest_cluster(const model::Pixel& pixel, size_t start = 0) const {
-    double min_dist = pixel.distance_to(centers[start]);
-    size_t min_index = start;
+    size_t min_index = start % centers.size();
+    double min_dist = pixel.distance_to(centers[min_index]);
     for (size_t i = 0; i < centers.size(); i++) {
-      if (i != start) {
+      if (i != min_index) {
         double dist = pixel.distance_to(centers[i]);
         if (dist < min_dist) {
           min_dist = dist;
