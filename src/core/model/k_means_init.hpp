@@ -23,6 +23,8 @@ inline std::ostream& operator<<(std::ostream& os, const KMeansInit& k_means_init
       return os << "RANDOM_PARTITION";
     case KMeansInit::K_MEANS_PP:
       return os << "K_MEANS_PP";
+    default:
+      throw std::invalid_argument("Unknown enum!");
   }
 }
 

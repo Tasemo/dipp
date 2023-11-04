@@ -1,8 +1,10 @@
 #include "command_line_parser.hpp"
 
 #include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <string>
+#include <vector>
 
 void util::CommandLineParser::set_description(const std::string& description) {
   _cmd.set_description(description);

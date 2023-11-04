@@ -23,6 +23,8 @@ inline std::ostream& operator<<(std::ostream& os, const Distribution& distributi
       return os << "LLOYD";
     case Distribution::BISECTING:
       return os << "BISECTING";
+    default:
+      throw std::invalid_argument("Unknown enum!");
   }
 }
 

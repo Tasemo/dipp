@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <tlx/cmdline_parser.hpp>
@@ -117,6 +118,9 @@ class CommandLineParser {
   void print_result();
 
   template <typename T>
+  struct AlwaysFalse : std::false_type {};
+
+  template <typename T>
   void add_option(char key, const std::string& longkey, T& dest, const std::string& desc) {
     static_assert(std::is_enum_v<T>, "Options only work with enum types!");
     auto underlying = static_cast<std::underlying_type_t<T>>(dest);
@@ -128,7 +132,7 @@ class CommandLineParser {
     } else if constexpr (std::is_same_v<std::underlying_type_t<T>, size_t>) {
       _cmd.add_size_t(key, longkey, option->temporary, desc);
     } else {
-      static_assert(false, "Unknown underlying enum type!");
+      static_assert(AlwaysFalse<T>::value, "Unknown underlying enum type!");
     }
     _options.push_back(std::move(option));
   }
