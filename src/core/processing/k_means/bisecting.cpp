@@ -35,14 +35,17 @@ std::vector<model::Pixel> processing::Bisecting::perform(const model::Context& c
     );
     // TODO: accumulated clusters were already computed in previous k-Means step
     // should the KMeansModel just contain the index of the biggest cluster? <-- Overhead?
-    auto max_id = accumulated.Max().cluster_index;
-    auto filtered = closest.Filter([max_id](const model::Cluster& cluster) {
-      return cluster.cluster_index == max_id;
+    auto max_cluster = accumulated.Max().cluster_index;
+    auto filtered = closest.Filter([max_cluster](const model::Cluster& cluster) {
+      return cluster.cluster_index == max_cluster;
     });
     auto filtered_points = filtered.Map([](const model::Cluster& cluster) {
       return cluster.center;
     });
-    current_model = k_means.process(ctx, filtered_points.Collapse());
+    // replace the biggest cluster by calculating 2 new ones using k-Means
+    auto next_model = k_means.process(ctx, filtered_points.Collapse());
+    current_model.centers.erase(current_model.centers.begin() + static_cast<long>(max_cluster));
+    current_model.centers.insert(current_model.centers.end(), next_model.centers.begin(), next_model.centers.end());
   }
   return current_model.centers;
 }

@@ -6,7 +6,6 @@
 #include <model/k_means_model.hpp>
 #include <model/pixel.hpp>
 #include <thrill/api/all_gather.hpp>
-#include <thrill/api/cache.hpp>
 #include <thrill/api/collapse.hpp>
 #include <thrill/api/dia.hpp>
 #include <thrill/api/reduce_by_key.hpp>

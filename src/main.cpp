@@ -91,7 +91,7 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
   processing::ImageToDIA image_to_dia(image);
   processing::Validation validation(bounding_boxes);
   processing::Result result;
-  if (args.distribution == model::Distribution::LLOYD) {
+  if (args.distribution == model::Distribution::LLOYD || args.distribution == model::Distribution::BISECTING) {
     processing::Threshold threshold(15);
     processing::WriteImageToDisk write_image_to_disk(image_loader.get_data_dir() + "debug/");
     processing::KMeans k_means(args.cluster_count, args.max_iteratations, args.epsilon, args.init, args.distribution);
