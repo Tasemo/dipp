@@ -1,21 +1,29 @@
 #pragma once
 
 #include <cstddef>
+#include <ostream>
 
 namespace model {
 
-enum Distribution {
+enum struct Distribution : size_t {
   TRIVIAL = 1,
   LLOYD = 2,
   BISECTING = 3,
 };
 
-inline bool is_valid_distribution(size_t value) {
+inline bool is_valid(Distribution /*distribution*/, size_t value) {
   return value >= static_cast<size_t>(Distribution::TRIVIAL) && value <= static_cast<size_t>(Distribution::BISECTING);
 }
 
-inline Distribution get_distribution(size_t value) {
-  return static_cast<Distribution>(value);
+inline std::ostream& operator<<(std::ostream& os, const Distribution& distribution) {
+  switch (distribution) {
+    case Distribution::TRIVIAL:
+      return os << "TRIVIAl";
+    case Distribution::LLOYD:
+      return os << "LLOYD";
+    case Distribution::BISECTING:
+      return os << "BISECTING";
+  }
 }
 
 }  // namespace model

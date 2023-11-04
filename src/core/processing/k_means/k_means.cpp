@@ -16,13 +16,13 @@
 #include <processing/k_means/k_means_strategy.hpp>
 #include <processing/k_means/lloyd.hpp>
 #include <stdexcept>
-#include <string>
 #include <thrill/api/all_gather.hpp>
 #include <thrill/api/cache.hpp>
 #include <thrill/api/collapse.hpp>
 #include <thrill/api/dia.hpp>
 #include <thrill/api/reduce_by_key.hpp>
 #include <thrill/api/sample.hpp>
+#include <util/string_utils.hpp>
 #include <vector>
 
 std::unique_ptr<processing::InitStrategy> get_init_strategy(model::KMeansInit init) {
@@ -34,7 +34,7 @@ std::unique_ptr<processing::InitStrategy> get_init_strategy(model::KMeansInit in
     case model::KMeansInit::K_MEANS_PP:
       return std::make_unique<processing::KMeansPlusPlus>();
     default:
-      throw std::invalid_argument("Unknown init option: " + std::to_string(init));
+      throw std::invalid_argument("Unknown init option: " + util::to_string(init));
   }
 }
 
@@ -45,7 +45,7 @@ std::unique_ptr<processing::KMeansStrategy> get_implementation(model::Distributi
     case model::Distribution::BISECTING:
       return std::make_unique<processing::Bisecting>();
     default:
-      throw std::invalid_argument("Unknown distribution option: " + std::to_string(distribution));
+      throw std::invalid_argument("Unknown distribution option: " + util::to_string(distribution));
       break;
   }
 }

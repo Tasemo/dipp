@@ -19,8 +19,7 @@
 #include <processing/validation.hpp>
 #include <processing/write_image_to_disk.hpp>
 #include <thrill/api/context.hpp>
-#include <tlx/cmdline_parser.hpp>
-#include <tlx/counting_ptr.hpp>
+#include <util/command_line_parser.hpp>
 #include <util/paint_bounding_boxes.hpp>
 #include <util/paint_clusters.hpp>
 #include <vector>
@@ -39,14 +38,13 @@ struct CommandLineArgs {
 };
 
 bool parse_command_line(CommandLineArgs &args, int argc, const char *const *argv) {
-  size_t distribution{2}, k_means_init{1};
-  tlx::CmdlineParser parser;
+  util::CommandLineParser parser;
   parser.set_description(R"(Distributed image processing pipeline with various distribution methods:
   trivial (1): generates equally sized and spaced sub-images
   lloyd (2): image segmentation with k-means (lloyd`s algorithm))
   bisecting (3): image segmentation with bisecting k-means)");
   parser.set_author("Tim Oelkers <tim.oelkers@web.de>");
-  parser.add_size_t('m', "distribution", distribution, "distribution method, default: 2 (lloyd)");
+  parser.add_option('m', "distribution", args.distribution, "distribution method, default: 2 (lloyd)");
   parser.add_size_t('w', "width", args.global_width, "total image width, default: 1024");
   parser.add_size_t('h', "height", args.global_height, "total image height, default: 1024");
   parser.add_double('r', "start_ra", args.start_ra, "right-ascension (ra) of the top left corner of the SDSS image, default: 180.0");
@@ -54,24 +52,9 @@ bool parse_command_line(CommandLineArgs &args, int argc, const char *const *argv
   parser.add_double('s', "scale", args.scale, "scale in arcseconds per pixel of the SDSS image, default: 0.315");
   parser.add_size_t('i', "max_iterations", args.max_iteratations, "maximum number of k-means iterations, default: 10");
   parser.add_double('e', "epsilon", args.epsilon, "desired k-means accuracy, default: 1.0");
-  parser.add_size_t('y', "init_strategy", k_means_init, "k-means init strategy (1 - random, 2 - random partition (forgy), 3 - k-means++), default: 1");
+  parser.add_option('y', "init_strategy", args.init, "k-means init strategy (1 - random, 2 - random partition (forgy), 3 - k-means++), default: 1");
   parser.add_size_t('c', "cluster_count", args.cluster_count, "k-means cluster count, 0 for estimation, default: 0");
-  if (!parser.process(argc, argv)) {
-    return false;
-  }
-  if (!model::is_valid_distribution(distribution)) {
-    std::cout << "Error: parameter \"method\" is invalid!\n\n";
-    parser.print_usage();
-    return false;
-  }
-  if (!model::is_valid_k_means_init(k_means_init)) {
-    std::cout << "Error: parameter \"init_strategy\" is invalid!\n\n";
-    parser.print_usage();
-    return false;
-  }
-  args.distribution = model::get_distribution(distribution);
-  args.init = model::get_k_means_init(k_means_init);
-  return true;
+  return parser.process(argc, argv);
 }
 
 void process(thrill::Context &ctx, const CommandLineArgs &args) {
