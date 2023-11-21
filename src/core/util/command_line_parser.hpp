@@ -9,6 +9,9 @@
 #include <utility>
 #include <vector>
 
+template <typename T>
+struct AlwaysFalse : std::false_type {};
+
 struct BaseOption {
   virtual ~BaseOption() = default;
   virtual bool is_valid_option() const = 0;
@@ -16,13 +19,13 @@ struct BaseOption {
   virtual std::string get_name() const = 0;
 };
 
-template <typename T, typename U>
+template <typename T>
 struct Option : public BaseOption {
   T* original;
-  U temporary;
+  std::underlying_type_t<T> temporary;
   std::string name;
 
-  Option(T& original, U temporary, std::string name)
+  Option(T& original, std::underlying_type_t<T> temporary, std::string name)
       : original(&original), temporary(temporary), name(std::move(name)) {}
 
   bool is_valid_option() const override {
@@ -117,14 +120,16 @@ class CommandLineParser {
   void print_result(std::ostream& os);
   void print_result();
 
-  template <typename T>
-  struct AlwaysFalse : std::false_type {};
-
+  /**
+   * @brief
+   *
+   * @note destination must be an enum and a corresponding function "bool is_valid(Enum, size_t)" must exist
+   */
   template <typename T>
   void add_option(char key, const std::string& longkey, T& dest, const std::string& desc) {
     static_assert(std::is_enum_v<T>, "Options only work with enum types!");
     auto underlying = static_cast<std::underlying_type_t<T>>(dest);
-    auto option = std::make_unique<Option<T, std::underlying_type_t<T>>>(dest, underlying, longkey);
+    auto option = std::make_unique<Option<T>>(dest, underlying, longkey);
     if constexpr (std::is_same_v<std::underlying_type_t<T>, int>) {
       _cmd.add_int(key, longkey, option->temporary, desc);
     } else if constexpr (std::is_same_v<std::underlying_type_t<T>, unsigned int>) {

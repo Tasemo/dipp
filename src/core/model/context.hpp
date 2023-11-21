@@ -110,7 +110,7 @@ struct Context {
    * @brief calculates the local y position of a pixel from a global y
    */
   inline size_t to_local_y(size_t global_y) const {
-    return global_y % local_height;
+    return global_y % local_width;
   }
 
   /**
