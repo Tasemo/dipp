@@ -1,11 +1,9 @@
 #include <gtest/gtest.h>
 
 #include <cstddef>
-#include <filesystem>
 #include <model/context.hpp>
 #include <model/pixel.hpp>
 #include <opencv2/core/matx.hpp>
-#include <opencv2/imgcodecs.hpp>
 #include <processing/write_image_to_disk.hpp>
 #include <string>
 #include <thrill/api/context.hpp>
@@ -26,14 +24,8 @@ TEST_F(WriteImageToDisk, BasicTest) {
     });
     auto write_to_test = processing::WriteImageToDisk(_temporary_folder);
     write_to_test.process(context, pixels);
-    ASSERT_TRUE(std::filesystem::exists(_temporary_folder + std::to_string(ctx.my_rank()) + ".jpeg"));
-    auto image = cv::imread(_temporary_folder + std::to_string(ctx.my_rank()) + ".jpeg");
-    for (int x = 0; x < image.cols; x++) {
-      for (int y = 0; y < image.rows; y++) {
-        cv::Vec3b color = image.at<cv::Vec3b>(y, x);
-        EXPECT_EQ(expected, color);
-      }
-    }
+    auto image_path = _temporary_folder + std::to_string(ctx.my_rank()) + ".jpeg";
+    assert_image(image_path, context.local_width, context.local_height, expected);
   };
   run_thrill(1, 4, start_func);
 }

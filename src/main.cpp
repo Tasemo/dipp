@@ -17,6 +17,7 @@
 #include <processing/pixel_worker_mapping.hpp>
 #include <processing/threshold.hpp>
 #include <processing/validation.hpp>
+#include <processing/write_clusters_to_disk.hpp>
 #include <processing/write_image_to_disk.hpp>
 #include <thrill/api/context.hpp>
 #include <util/command_line_parser.hpp>
@@ -90,7 +91,8 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
     }
     debug_clusters.paint(k_means_model);
     processing::PixelClusterMapping pixel_cluster_mapping(k_means_model);
-    auto validation_chain = image_to_dia.add_next(pixel_cluster_mapping)->add_next(validation);
+    processing::WriteClustersToDisk write_clusters_to_disk(image_loader.get_data_dir() + "result/");
+    auto validation_chain = image_to_dia.add_next(pixel_cluster_mapping)->add_next(write_clusters_to_disk)->add_next(validation);
     result = validation_chain->process(context);
   } else if (args.distribution == model::Distribution::TRIVIAL) {
     processing::PixelWorkerMapping pixel_worker_mapping;
