@@ -77,7 +77,7 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
   processing::Result result;
   if (args.distribution == model::Distribution::LLOYD || args.distribution == model::Distribution::BISECTING) {
     processing::Threshold threshold(15);
-    processing::WriteImageToDisk write_image_to_disk(image_loader.get_data_dir() + "debug/");
+    processing::WriteImageToDisk write_image_to_disk(image_loader.get_data_dir() + "threshold/");
     processing::KMeans k_means(args.cluster_count, args.max_iteratations, args.epsilon, args.init, args.distribution);
     auto k_means_chain = image_to_dia.add_next(threshold)->add_next(write_image_to_disk);
     model::KMeansModel k_means_model;

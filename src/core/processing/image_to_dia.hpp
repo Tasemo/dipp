@@ -14,9 +14,10 @@ namespace processing {
 class ImageToDIA : public Producer<thrill::DIA<model::Pixel>> {
  private:
   const cv::Mat& _image;
+  const bool _streaming;
 
  public:
-  explicit ImageToDIA(const cv::Mat& image);
+  explicit ImageToDIA(const cv::Mat& image, bool streaming = true);
   thrill::DIA<model::Pixel> process(const model::Context& ctx) const override;
 };
 
