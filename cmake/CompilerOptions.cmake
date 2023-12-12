@@ -4,13 +4,17 @@ add_compile_options(
     -Wcast-align -Wsign-conversion -Wformat=2 -Wimplicit-fallthrough
 )
 
-include(CheckCXXCompilerFlag)
-check_cxx_compiler_flag("-march=native" COMPILER_SUPPORTS_MARCH_NATIVE)
+option(NATIVE_COMPILE "Compile the code with the current CPU architecture (arch=native)" ON)
 
-if(COMPILER_SUPPORTS_MARCH_NATIVE)
-    add_compile_options(-march=native)
-else()
-    message(NOTICE "-march=native is not supported")
+if(NATIVE_COMPILE)
+    include(CheckCXXCompilerFlag)
+    check_cxx_compiler_flag("-march=native" COMPILER_SUPPORTS_MARCH_NATIVE)
+
+    if(COMPILER_SUPPORTS_MARCH_NATIVE)
+        add_compile_options(-march=native)
+    else()
+        message(NOTICE "-march=native is not supported by the compiler")
+    endif()
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
