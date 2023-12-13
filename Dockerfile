@@ -26,7 +26,8 @@ RUN \
     cmake --build build --config Release --parallel $(nproc)
 
 FROM base AS runtime
-RUN useradd -m cluster
+RUN groupadd -g 1234 cluster
+RUN useradd -m -g cluster cluster
 RUN mkdir -p /home/cluster/.ssh
 RUN touch /home/cluster/.ssh/authorized_keys
 RUN chmod 600 /home/cluster/.ssh/authorized_keys
