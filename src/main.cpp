@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <loading/sdss_image_loader.hpp>
@@ -8,6 +9,7 @@
 #include <model/k_means_model.hpp>
 #include <model/rect.hpp>
 #include <model/sdss_context.hpp>
+#include <processing/downsampling.hpp>
 #include <processing/estimate_clusters.hpp>
 #include <processing/image_to_dia.hpp>
 #include <processing/k_means/k_means.hpp>
@@ -36,6 +38,7 @@ struct CommandLineArgs {
   size_t max_iteratations{10};
   double epsilon{1.0};
   model::KMeansInit init{model::KMeansInit::RANDOM};
+  size_t downsampling{1};
 };
 
 bool parse_command_line(CommandLineArgs &args, int argc, const char *const *argv) {
@@ -55,6 +58,7 @@ bool parse_command_line(CommandLineArgs &args, int argc, const char *const *argv
   parser.add_double('e', "epsilon", args.epsilon, "desired k-means accuracy, default: 1.0");
   parser.add_option('y', "init_strategy", args.init, "k-means init strategy (1 - random, 2 - random partition (forgy), 3 - k-means++), default: 1");
   parser.add_size_t('c', "cluster_count", args.cluster_count, "k-means cluster count, 0 for estimation, default: 0");
+  parser.add_size_t('o', "downsampling", args.downsampling, "sampling factor used for k-Means clustering, default: 1");
   return parser.process(argc, argv);
 }
 
@@ -76,10 +80,11 @@ void process(thrill::Context &ctx, const CommandLineArgs &args) {
   processing::Validation validation(bounding_boxes);
   processing::Result result;
   if (args.distribution == model::Distribution::LLOYD || args.distribution == model::Distribution::BISECTING) {
+    processing::Downsampling downsampling(args.downsampling);
     processing::Threshold threshold(15);
     processing::WriteImageToDisk write_image_to_disk(image_loader.get_data_dir() + "threshold/");
     processing::KMeans k_means(args.cluster_count, args.max_iteratations, args.epsilon, args.init, args.distribution);
-    auto k_means_chain = image_to_dia.add_next(threshold)->add_next(write_image_to_disk);
+    auto k_means_chain = image_to_dia.add_next(downsampling)->add_next(threshold)->add_next(write_image_to_disk);
     model::KMeansModel k_means_model;
     if (args.cluster_count == 0) {
       processing::EstimateClusters estimate(11);
