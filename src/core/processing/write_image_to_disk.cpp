@@ -20,6 +20,9 @@ processing::WriteImageToDisk::WriteImageToDisk(const std::string& output_folder,
 }
 
 thrill::DIA<model::Pixel> processing::WriteImageToDisk::process(const model::Context& ctx, const thrill::DIA<model::Pixel>& pixels) const {
+  if (ctx.no_debug) {
+    return pixels;
+  }
   std::vector<cv::Vec3b> local(ctx.local_width * ctx.local_height, _missing_color);
   auto to_local = pixels.Map([&ctx, &local](const model::Pixel& p) {
     size_t local_x = ctx.to_local_x(p.location[0]);

@@ -12,11 +12,17 @@
 #include <util/color_utils.hpp>
 
 util::PaintClusters::PaintClusters(const model::Context& context, cv::Mat& image, const std::string& output_dir)
-    : _context(context), _image(image.clone()), _output_dir(output_dir) {
-  std::filesystem::create_directories(output_dir);
+    : _context(context), _output_dir(output_dir) {
+  if (!context.no_debug) {
+    std::filesystem::create_directories(output_dir);
+    _image = image.clone();
+  }
 }
 
 void util::PaintClusters::paint(const model::KMeansModel& model) {
+  if (_context.no_debug) {
+    return;
+  }
   auto colors = util::generate_colors(model.centers.size());
   for (int x = 0; x < _image.cols; x++) {
     for (int y = 0; y < _image.rows; y++) {

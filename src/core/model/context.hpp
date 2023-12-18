@@ -13,6 +13,10 @@ struct Context {
    */
   thrill::Context& ctx;
   /**
+   * @brief wether to output debug images
+   */
+  const bool no_debug;
+  /**
    * @brief the unique id of the current worker
    */
   const size_t rank;
@@ -52,8 +56,9 @@ struct Context {
   /**
    * @brief constructs a new context with a given thrill context and a global width and height
    */
-  Context(thrill::Context& ctx, size_t global_width, size_t global_height)
+  Context(thrill::Context& ctx, size_t global_width, size_t global_height, bool no_debug = false)
       : ctx(ctx),
+        no_debug(no_debug),
         rank(ctx.my_rank()),
         global_width(global_width),
         global_height(global_height),

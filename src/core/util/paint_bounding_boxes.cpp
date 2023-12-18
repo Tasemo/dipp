@@ -12,11 +12,17 @@
 #include <vector>
 
 util::PaintBoundingBoxes::PaintBoundingBoxes(const model::Context& context, cv::Mat& image, const std::string& output_dir, const cv::Vec3b& color)
-    : _context(context), _image(image.clone()), _output_dir(output_dir), _color(color) {
-  std::filesystem::create_directories(output_dir);
+    : _context(context), _output_dir(output_dir), _color(color) {
+  if (!context.no_debug) {
+    std::filesystem::create_directories(output_dir);
+    _image = image.clone();
+  }
 }
 
 void util::PaintBoundingBoxes::paint(const std::vector<model::Rect>& bounding_boxes) {
+  if (_context.no_debug) {
+    return;
+  }
   for (int x = 0; x < _image.cols; x++) {
     for (int y = 0; y < _image.rows; y++) {
       size_t global_x = _context.to_global_x(static_cast<size_t>(x));

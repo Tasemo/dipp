@@ -31,6 +31,7 @@ struct CommandLineArgs {
   model::Distribution distribution{model::Distribution::LLOYD};
   size_t global_width{1024};
   size_t global_height{1024};
+  bool no_debug{false};
   double start_ra{180.0};
   double start_dec{0.0};
   double scale{0.315};
@@ -51,6 +52,7 @@ bool parse_command_line(CommandLineArgs &args, int argc, const char *const *argv
   parser.add_option('m', "distribution", args.distribution, "distribution method, default: 2 (lloyd)");
   parser.add_size_t('w', "width", args.global_width, "total image width, default: 1024");
   parser.add_size_t('h', "height", args.global_height, "total image height, default: 1024");
+  parser.add_bool('n', "no_debug", args.no_debug, "wether to output debug images, default: false");
   parser.add_double('r', "start_ra", args.start_ra, "right-ascension (ra) of the top left corner of the SDSS image, default: 180.0");
   parser.add_double('d', "start_dec", args.start_dec, "declination (dec) of the top left corner of the SDSS image, default: 0.0");
   parser.add_double('s', "scale", args.scale, "scale in arcseconds per pixel of the SDSS image, default: 0.315");
@@ -63,7 +65,7 @@ bool parse_command_line(CommandLineArgs &args, int argc, const char *const *argv
 }
 
 void process(thrill::Context &ctx, const CommandLineArgs &args) {
-  model::Context context(ctx, args.global_width, args.global_height);
+  model::Context context(ctx, args.global_width, args.global_height, args.no_debug);
   model::SDSSContext sdss(context, args.start_ra, args.start_dec, args.scale);
   loading::SDSSImageLoader image_loader(sdss);
   auto image = image_loader.load_image();

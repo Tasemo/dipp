@@ -48,6 +48,9 @@ processing::WriteClustersToDisk::WriteClustersToDisk(const std::string& output_f
 }
 
 thrill::DIA<std::vector<model::Pixel>> processing::WriteClustersToDisk::process(const model::Context& ctx, const thrill::DIA<std::vector<model::Pixel>>& clusters) const {
+  if (ctx.no_debug) {
+    return clusters;
+  }
   _local_index = 0;
   return clusters.Map([&](const std::vector<model::Pixel>& cluster) {
     auto bounds = get_image_bounds(cluster);
