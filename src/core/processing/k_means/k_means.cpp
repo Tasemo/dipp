@@ -18,7 +18,6 @@
 #include <stdexcept>
 #include <thrill/api/all_gather.hpp>
 #include <thrill/api/cache.hpp>
-#include <thrill/api/collapse.hpp>
 #include <thrill/api/dia.hpp>
 #include <thrill/api/reduce_by_key.hpp>
 #include <thrill/api/sample.hpp>
