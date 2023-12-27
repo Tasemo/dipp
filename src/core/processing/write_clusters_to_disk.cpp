@@ -14,7 +14,7 @@
 #include <opencv2/core/matx.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <string>
-#include <thrill/api/cache.hpp>
+#include <thrill/api/collapse.hpp>
 #include <thrill/api/dia.hpp>
 #include <vector>
 
@@ -52,7 +52,7 @@ thrill::DIA<std::vector<model::Pixel>> processing::WriteClustersToDisk::process(
     return clusters;
   }
   _local_index = 0;
-  return clusters.Map([&](const std::vector<model::Pixel>& cluster) {
+  auto mapped = clusters.Map([&](const std::vector<model::Pixel>& cluster) {
     auto bounds = get_image_bounds(cluster);
     auto width = bounds.max_x - bounds.min_x + 1;
     auto height = bounds.max_y - bounds.min_y + 1;
@@ -62,4 +62,5 @@ thrill::DIA<std::vector<model::Pixel>> processing::WriteClustersToDisk::process(
     cv::imwrite(image_path, image);
     return cluster;
   });
+  return mapped.Collapse();
 }

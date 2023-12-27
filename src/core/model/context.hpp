@@ -94,14 +94,14 @@ struct Context {
    * @brief calculates the global x position of the pixel from a global index
    */
   inline size_t index_to_global_x(size_t index) const {
-    return index_to_local_x(index) + x_tile * local_width;
+    return to_global_x(index_to_local_x(index));
   }
 
   /**
    * @brief calculates the global y position of the pixel from a global index
    */
   inline size_t index_to_global_y(size_t index) const {
-    return index_to_local_y(index) + y_tile * local_height;
+    return to_global_y(index_to_local_y(index));
   }
 
   /**
@@ -115,7 +115,7 @@ struct Context {
    * @brief calculates the local y position of a pixel from a global y
    */
   inline size_t to_local_y(size_t global_y) const {
-    return global_y % local_width;
+    return global_y % local_height;
   }
 
   /**
