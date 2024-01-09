@@ -92,6 +92,8 @@ model::KMeansModel processing::KMeans::process(const model::Context& ctx, const 
 }
 
 model::KMeansModel processing::KMeans::process(const model::Context& ctx, const ClusterEstimation& estimation) const {
-  std::cout << "Estimated: " << estimation.global_cluster_count << "\n";
+  if (ctx.rank == 0) {
+    std::cout << "Estimated: " << estimation.global_cluster_count << "\n";
+  }
   return process(ctx, estimation.pixels, estimation.global_cluster_count);
 }

@@ -23,4 +23,4 @@ export THRILL_NET="local"
 export THRILL_LOCAL="1"
 
 # the location of the log files, thrill will append "-host-{host-id}.json" to this, default: no logs
-# export THRILL_LOG="/data/logs/log"
+# export THRILL_LOG="/data/log"
