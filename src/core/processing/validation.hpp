@@ -8,6 +8,7 @@
 #include <processing/pipeline.hpp>
 #include <thrill/api/dia.hpp>
 #include <unordered_set>
+#include <util/math_utils.hpp>
 #include <utility>
 #include <vector>
 
@@ -24,8 +25,10 @@ struct Result {
 };
 
 inline std::ostream& operator<<(std::ostream& os, const Result& result) {
-  return os << "Total: " << result.total_clusters << ", Cut: " << result.cut_clusters
-            << ", Uncut: " << result.uncut_clusters << ", Not Found: " << result.not_found_clusters;
+  return os << "Total: " << result.total_clusters
+            << ", Cut: " << result.cut_clusters << "(" << util::percentage(result.total_clusters, result.cut_clusters) << "%)"
+            << ", Uncut: " << result.uncut_clusters << "(" << util::percentage(result.total_clusters, result.uncut_clusters) << "%)"
+            << ", Not Found: " << result.not_found_clusters << "(" << util::percentage(result.total_clusters, result.not_found_clusters) << "%)";
 }
 
 /**

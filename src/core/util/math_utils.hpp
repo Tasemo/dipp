@@ -11,4 +11,9 @@ inline R map_range(const R minOutRange, const R maxOutRange, const T minInRange,
   return minOutRange + slope * (value - minInRange);
 }
 
+template <typename T>
+inline double percentage(const T total, const T part) {
+  return part / static_cast<double>(total) * 100;
+}
+
 }  // namespace util
